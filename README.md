@@ -12,6 +12,7 @@ The Jupyter Notebook server is a web application that allows you to create and s
 
 ## Timeline
 
+```
 Total Time: 3 hours
 
 Setup - 15 minutes
@@ -23,6 +24,6 @@ Notebook - 10 minutes
 JupyterHub - 10 minutes
 JupyterHub on Carina - 40 minutes
 Wrap up - 5 minutes
-
+```
 
 
