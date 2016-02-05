@@ -1,5 +1,7 @@
 # Deploy an interactive data science environment with JupyterHub on Docker Swarm
 
+Time: 3 hours
+
 A workshop to deploy an interactive data science environment and share documents that contain live code by taking advantage of Docker and Docker Swarm to deploy Jupyter Notebook servers with JupyterHub.
 
 Docker allows you to package an application and its dependencies into an image that can run in containers on any Linux server. You can use Docker Swarm to run containers across a distributed cluster, which allows you to scale out your application as if it were running on a single, huge computer. To get up and running in minutes we'll be using [Carina by Rackspace](https://getcarina.com/), a hosted Docker Swarm environment.
