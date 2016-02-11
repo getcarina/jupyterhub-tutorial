@@ -150,25 +150,75 @@ alias de="env | grep DOCKER_"
 
         <section id="docker-swarm">
           <h1 style="color:DeepSkyBlue">Docker Swarm</h1>
+          <img src="img/docker-swarm.png"/>
         </section>
 
         <section>
-          <h1>Title</h1>
-        </section>
-
-        <section>
-          <h1>Docker Docker Docker</h1>
+          <h1>Docker Swarm</h1>
           <ul>
-            <li>Yada yada yada.</li>
+            <li>Many Docker Hosts, one API endpoint</li>
+            <li>New primitives (e.g. affinities)</li>
+            <li>Scheduling according to resource constraints</li>
           </ul>
         </section>
 
         <section>
-          <h2>Some code</h2>
-          <pre><code data-trim class="bash">
-alias de="env | grep DOCKER_"
+          <img src="img/carina-topology.png"/>
+
+          <aside class="notes">
+            <ul>
+              <li>Carina uses Docker Swarm</li>
+              <li>Handles the setup and managment</li>
+              <li>Segments / Nodes</li>
+              <li>This is how we scale</li>
+            </ul>
+          </aside>
+        </section>
+
+        <section>
+          <h1>Grow Your Cluster</h1>
+          <pre><code class="bash" data-trim data-noescape>
+$ <span class="fragment">carina ls</span>
+<span class="fragment">ClusterName        Flavor             Segments           AutoScale          Status
+mycluster          container1-4G      1                  false              active</span>
+<span class="fragment">
+$ carina grow --by 1 mycluster</span>
+<span class="fragment">ClusterName        Flavor             Segments           AutoScale          Status
+mycluster          container1-4G      1                  false              growing</span>
+<span class="fragment">
+$ carina ls</span>
+<span class="fragment">
+ClusterName        Flavor             Segments           AutoScale          Status
+mycluster          container1-4G      2                  false              active</span>
           </code></pre>
         </section>
+
+      <section>
+        <pre><code class="bash" data-trim data-noescape>
+$ <span class="fragment">docker run --name whoa1 --detach --publish 80:8080 rackerlabs/whoa</span>
+<span class="fragment">44aff6801d136ae7ba49ad074d94a7ba94740326f8d9099d7830ec8095abdf72</span>
+<span class="fragment">
+$ docker run --name whoa2 --detach --publish 80:8080 rackerlabs/whoa</span>
+<span class="fragment">5e0a9815f9558c7a26a44f3bb214f241a5fbf26e01e008739dff64e39c802fce</span>
+<span class="fragment">
+$ docker port whoa1 8080</span>
+<span class="fragment">104.130.0.119:80</span>
+<span class="fragment">
+$ docker port whoa2 8080</span>
+<span class="fragment">104.130.0.117:80</span>
+<span class="fragment">
+$ curl $(docker port whoa1)</span>
+<span class="fragment">🎉 Whoa! 🎉</span>
+        </code></pre>
+
+        <aside class="notes">
+          <ul>
+            <li>Each segment is a docker host</li>
+            <li>Segment IP Address</li>
+            <li>Publish to same port across segments</li>
+          </ul>
+        </aside>
+      </section>
 
 <!-- ********************************************************************** -->
 
