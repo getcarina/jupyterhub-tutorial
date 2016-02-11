@@ -17,8 +17,7 @@ Total Time: 3 hours
 
 Setup - 15 minutes
 Docker - 30 minutes
-Docker Swarm - 10 minutes
-Carina - 45 minutes
+Docker Swarm and Carina - 55 minutes
 Break - 30 minutes (15 minutes of break intended, 15 minutes for catch up)
 Notebook - 10 minutes
 JupyterHub - 10 minutes
