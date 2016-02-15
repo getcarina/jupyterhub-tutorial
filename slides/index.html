@@ -430,6 +430,50 @@ $ curl $(docker port whoa1)</span>
       </section>
 
       <section>
+        <h2>Where does it run?</h2>
+
+        <p>Factors that implicitly influence container placement</p>
+
+        <ul>
+          <li><code>--publish</code> finds a node with the published port free</li>
+          <li><code>--volumes-from</code> uses the same node as the named container</li>
+          <li><code>--link</code> uses the same node aside the named container</li>
+        </ul>
+
+        <aside class="notes">
+          When Swarm schedules a new container, a number of factors determine which node it places
+          the container on. Containers related with these docker arguments will automatically be
+          scheduled together.
+        </aside>
+      </section>
+
+      <section>
+        <h2>Constraints and Affinity</h2>
+
+        <p>Explicitly influence where your containers run</p>
+        <p>Set by environment variables or build arguments</p>
+<pre><code class="bash" data-noescape>
+# Run on the same node as another container
+$ docker run --env affinity:container==backend ...
+
+# Run on a node where image is available
+$ docker run --env affinity:image==myapp ...
+
+# Explicit node name
+$ docker run --env constraint:node==6dcd3c04-fab5-4367-ac39-d8b17c41c39c-n1 ...
+
+# Build a new image on the same node as an existing container
+$ docker build --build-arg affinity:image==myapp -t myapp:v2 .
+</code></pre>
+
+        <aside class="notes">
+          Generally speaking, constraints filter on docker daemon attributes, while affinities
+          filter on attributes of other containers on each node. You can also use custom container
+          metadata labels for lots of control.
+        </aside>
+      </section>
+
+      <section>
         <h1>Carina</h1>
 
         <h3>Push Button, Receive Swarm</h3>
