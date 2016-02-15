@@ -529,17 +529,8 @@ alias de="env | grep DOCKER_"
         </section>
 
         <section>
-          <h1>Notebook Notebook Notebook</h1>
-          <ul>
-            <li>Yada yada yada.</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Some code</h2>
-          <pre><code data-trim class="bash">
-alias de="env | grep DOCKER_"
-          </code></pre>
+          <h1>Let's try it live!</h1>
+          <h2><a href="https://tmpnb.org">tmpnb.org</a></h2>
         </section>
 
 <!-- ********************************************************************** -->
@@ -549,21 +540,12 @@ alias de="env | grep DOCKER_"
         </section>
 
         <section>
-          <h1>Title</h1>
-        </section>
-
-        <section>
-          <h1>Notebook Notebook Notebook</h1>
-          <ul>
-            <li>Yada yada yada.</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Some code</h2>
-          <pre><code data-trim class="bash">
-alias de="env | grep DOCKER_"
-          </code></pre>
+          <h1>Architecture</h1>
+            <ul>
+              <li>Notebook servers for users</li>
+              <li>Configurable HTTP Proxy</li>
+              <li>Bring your own auth</li>
+            </ul>
         </section>
 
 <!-- ********************************************************************** -->
@@ -573,22 +555,40 @@ alias de="env | grep DOCKER_"
         </section>
 
         <section>
-          <h1>Title</h1>
-        </section>
-
-        <section>
-          <h1>Docker Docker Docker</h1>
+          <h1>Outline</h1>
           <ul>
-            <li>Yada yada yada.</li>
+            <li>Create a new cluster</li>
+            <li>Clone the repo for this preso</li>
+            <li>Rely on jupyterhub-launch</li>
           </ul>
         </section>
 
         <section>
-          <h2>Some code</h2>
+          <h2>Create a new cluster</h2>
           <pre><code data-trim class="bash">
-alias de="env | grep DOCKER_"
+carina create jupyterhub --wait
           </code></pre>
         </section>
+
+<!-- lol titles, we should make this smaller... -->
+        <section>
+          <h2>Clone this repo</h2>
+          <pre><code data-trim class="bash">
+git clone https://github.com/everett-toews/jupyterhub-on-docker-swarm
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Launch</h2>
+          <pre><code data-trim class="bash">
+cd jupyterhub-on-docker-swarm # if you're not already there
+cd jupyterhub-launch
+carina env jupyterhub
+# TODO: Environment variables, OAauth, Domain
+./launch.sh
+          </code></pre>
+        </section>
+
 
 <!-- ********************************************************************** -->
 
