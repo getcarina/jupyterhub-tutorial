@@ -20,9 +20,6 @@ Docker - 30 minutes
 Docker Swarm and Carina - 55 minutes
 Break - 30 minutes (15 minutes of break intended, 15 minutes for catch up)
 Notebook - 10 minutes
-JupyterHub - 10 minutes
-JupyterHub on Carina - 40 minutes
+JupyterHub on Carina - 50 minutes
 Wrap up - 5 minutes
 ```
-
-
