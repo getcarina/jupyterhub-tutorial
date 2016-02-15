@@ -215,6 +215,7 @@ alias de="env | grep DOCKER_"
 alias ds="docker ps"
 
 cd Downloads/mycluster
+more README.md
 source docker.env
 de
 dvm use
@@ -327,31 +328,48 @@ docker search python
 FROM gliderlabs/alpine:3.3
 MAINTAINER Firstname Lastname "firstname.lastname@example.com"
 
-ARG MESSAGE="Default Message"
+ARG BUILD_TIME_MSG="Default Build Time Message"
+ENV RUN_TIME_MSG="Default Run Time Message"
 
 RUN apk --no-cache add nginx
 
+COPY entrypoint.sh /entrypoint.sh
+
 WORKDIR /usr/share/nginx/html/
 
-RUN echo $MESSAGE >> index.html
+RUN echo $BUILD_TIME_MSG >> index.html
 
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["/entrypoint.sh"]
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Entrypoint Script</h2>
+          <p>Create a file called <code>entrypoint.sh</code> and make it executable</p>
+          <pre><code data-trim class="bash">
+#!/bin/sh
+
+set -euo pipefail
+
+echo $RUN_TIME_MSG >> /usr/share/nginx/html/index.html
+nginx -g daemon off;
           </code></pre>
         </section>
 
         <section>
           <h2>Images</h2>
           <pre><code data-trim class="bash">
-docker build --build-arg MESSAGE="Hello Carina" --tag="nginx-message:1.0" .
+docker build --build-arg BUILD_TIME_MSG="Chop Wood," --tag="nginx-message:1.0" .
 docker images
 docker run --detach \
   --name nginx \
   --publish 80:80 \
+  --env RUN_TIME_MSG="Carry Water" \
   nginx-message:1.0
 open http://$(docker port nginx 80/tcp)
-docker rm --force $(docker ps -l -q)
+docker rm --force nginx
           </code></pre>
         </section>
 
