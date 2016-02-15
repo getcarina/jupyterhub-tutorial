@@ -490,7 +490,7 @@ $ docker build --build-arg affinity:image==myapp -t myapp:v2 .
 
         <ul>
           <li>1 to 3 <em>"segments"</em>; LXC containers on a physical host</li>
-          <li>20 GB space, 4 GM memory, 2 vCPUs per segment</li>
+          <li>20 GB disk space, 4 GB memory, 2 vCPUs per segment</li>
           <li>Each segment has its own public IP, discoverable via <code>docker info</code></li>
         </ul>
 
@@ -508,6 +508,10 @@ Nodes: 3
   └ Reserved Memory: 0 B / 4.2 GiB
   └ Labels: executiondriver=native-0.2, kernelversion=3.18.21-1-rackos, ...
         </pre></code>
+
+        <aside class="notes">
+          Carina segments are for resource control, not geographic redundancy.
+        </aside>
       </section>
 
       <section>
