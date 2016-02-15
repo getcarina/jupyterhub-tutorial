@@ -429,6 +429,59 @@ $ curl $(docker port whoa1)</span>
         </aside>
       </section>
 
+      <section>
+        <h1>Carina</h1>
+
+        <h3>Push Button, Receive Swarm</h3>
+
+        <img src="img/push-button-receive-bacon.jpg"/>
+
+        <aside class="notes">
+          With some limitations
+        </aside>
+      </section>
+
+      <section>
+        <h2>Carina Clusters</h2>
+
+        <ul>
+          <li>1 to 3 <em>"segments"</em>; LXC containers on a physical host</li>
+          <li>20 GB space, 4 GM memory, 2 vCPUs per segment</li>
+          <li>Each segment has its own public IP, discoverable via <code>docker info</code></li>
+        </ul>
+
+        <pre><code class="nohighlight fragment" data-trim data-noescape>
+$ docker info
+Containers: 9
+Images: 13
+Role: primary
+Strategy: spread
+Filters: health, port, dependency, affinity, constraint
+Nodes: 3
+ 6dcd3c04-fab5-4367-ac39-d8b17c41c39c-n1: <mark>172.99.73.138</mark>:42376
+  └ Containers: 3
+  └ Reserved CPUs: 0 / 12
+  └ Reserved Memory: 0 B / 4.2 GiB
+  └ Labels: executiondriver=native-0.2, kernelversion=3.18.21-1-rackos, ...
+        </pre></code>
+      </section>
+
+      <section>
+        <h2>Carina Restrictions</h2>
+        <ul>
+          <li>Volumes only allowed within <code>/var/lib/docker</code></li>
+          <li>No <code>--privileged</code> containers or <code>--cap-add</code>/<code>--cap-drop</code></li>
+          <li>Limited device access</li>
+        </ul>
+
+        <p class="fragment"><em>...but other than that, it's just Swarm</em></p>
+
+        <aside class="notes">
+          Mostly these are related to security needs. Prefer using data volume containers to host
+          volumes.
+        </aside>
+      </section>
+
 <!-- ********************************************************************** -->
 
         <section id="break">
