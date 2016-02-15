@@ -152,6 +152,7 @@
               <ul>
                 <li>Download File</li>
                 <li>Unzip</li>
+                <li>List files</li>
               </ul>
           </ul>
         </section>
@@ -160,17 +161,51 @@
 
         <section id="docker">
           <h1 style="color:DeepSkyBlue">Docker</h1>
-          <aside class="notes">
-            <ul>
-              <li>Yada yada yada</li>
-            </ul>
-          </aside>
         </section>
 
         <section>
-          <h1>Docker Docker Docker</h1>
+          <h1>Comparison</h1>
+          <table>
+            <tr>
+              <td><img src="img/what-is-docker-diagram.png" width="400" height="auto"></td>
+              <td><img src="img/what-is-vm-diagram.png" width="400" height="auto"></td>
+            </tr>
+            <tr>
+              <td style="text-align:center">VMs</td>
+              <td style="text-align:center">Containers</td>
+            </tr>
+          </table>
+        </section>
+
+        <section>
+          <h1>Benefits</h1>
           <ul>
-            <li>Yada yada yada.</li>
+            <li>Better resource utilization</li>
+            <li>Application packaging (Docker images)</li>
+            <li>Process isolation</li>
+            <li>Reproducible environments</li>
+            <li>Composable</li>
+            <li>Cloud agnostic</li>
+          </ul>
+        </section>
+
+        <section>
+          <h1>Docker Client</h1>
+          <p>The CLI for the API.</p>
+          <ul>
+            <li>Containers</li>
+            <li>Images</li>
+            <li>Networks</li>
+            <li>Volumes</li>
+            <li>etc</li>
+          </ul>
+        </section>
+
+        <section>
+          <h1>Docker Version Manager</h1>
+          <p>Utility for managing Docker client versions.</p>
+          <ul>
+            <li>Installation instructions at <a href="https://getcarina.com/docs/tutorials/docker-version-manager/" target="_blank">Manage Docker client versions with dvm</a></li>
           </ul>
         </section>
 
@@ -178,6 +213,146 @@
           <h2>Docker Environment</h2>
           <pre><code data-trim class="bash">
 alias de="env | grep DOCKER_"
+alias ds="docker ps"
+
+cd Downloads/mycluster
+source docker.env
+de
+dvm use
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Containers</h2>
+          <pre><code data-trim class="bash">
+docker
+docker version
+docker ps # "ps" because it can be thought of like the Linux ps command
+docker run --interactive --tty alpine:3.3 /bin/sh
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Containers</h2>
+          <pre><code data-trim class="bash">
+uname -a
+hostname
+more /etc/hosts
+ip a
+ps
+echo "Hello Docker" > README.txt
+more README.txt
+ls
+exit
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Containers</h2>
+          <pre><code data-trim class="bash">
+docker ps
+docker ps --latest
+docker ps --latest --quiet
+docker start $(docker ps -l -q)
+docker ps
+docker attach $(docker ps -l -q)
+# Press enter if you just get a blank line
+more README.txt
+exit
+docker rm $(docker ps -l -q)
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Containers</h2>
+          <pre><code data-trim class="bash">
+docker run --detach --name ghost --publish 8080:2368 ghost:0.7
+open http://$(docker port ghost 2368/tcp)
+docker ps
+docker rm --force $(docker ps -l -q)
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Lab</h2>
+          <ol>
+            <li>Run an <code>nginx:1.9</code> container in detached mode</li>
+            <li>Bind the container port 80 to the host port 80</li>
+            <li>View the default nginx landing page</li>
+            <li>Bonus Points: Replace the default nginx landing page using <code>docker cp</code> and a file from your laptop</li>
+            <li>Stop the container and remove it</li>
+          </ol>
+          <aside class="notes">
+            <pre><code data-trim class="bash">
+docker run --detach --name nginx --publish 80:80 nginx:1.9
+docker cp README.md nginx:/usr/share/nginx/html/index.html
+open http://$(docker port nginx 80/tcp)
+docker rm --force $(docker ps -l -q)
+            </code></pre>
+          </aside>
+        </section>
+
+        <section>
+          <h1>Images</h1>
+          <ul>
+            <li>You can kinda sorta think of it like an image for a VM, but really it's a very different beast</li>
+            <li>Layered filesystems</li>
+            <li>Top layer is rw and the layers below are ro</li>
+            <li>There's an analogy to Git but we won't be using <code>docker commit</code></li>
+            <li><a href="https://hub.docker.com/" target="_blank">Docker Hub</a></li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Images</h2>
+          <pre><code data-trim class="bash">
+docker images
+docker pull alpine:3.3
+docker search python
+          </code></pre>
+        </section>
+
+        <section>
+          <h1>Dockerfile</h1>
+          <ul>
+            <li>Uses a basic DSL with instructions for building Docker images</li>
+            <li>Provides a repeatable, transparent, and idempotent mechanism for creating images</li>
+            <li>Each instruction adds a new layer to the image and then commits the image</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Dockerfile</h2>
+          <p>Create a file called <code>Dockerfile</code></p>
+          <pre><code data-trim class="bash">
+FROM gliderlabs/alpine:3.3
+MAINTAINER Firstname Lastname "firstname.lastname@example.com"
+
+ARG MESSAGE="Default Message"
+
+RUN apk --no-cache add nginx
+
+WORKDIR /usr/share/nginx/html/
+
+RUN echo $MESSAGE >> index.html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Images</h2>
+          <pre><code data-trim class="bash">
+docker build --build-arg MESSAGE="Hello Carina" --tag="nginx-message:1.0" .
+docker images
+docker run --detach \
+  --name nginx \
+  --publish 80:80 \
+  nginx-message:1.0
+open http://$(docker port nginx 80/tcp)
+docker rm --force $(docker ps -l -q)
           </code></pre>
         </section>
 
