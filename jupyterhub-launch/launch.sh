@@ -19,9 +19,6 @@ set -euo pipefail
 docker build -t jupyterhub-carina .
 docker pull jupyter/singleuser
 
-# Use the head node
-NODE_NAME=$(docker info | grep $(echo "${DOCKER_HOST#tcp://}" | cut -d ":" -f1) | cut -d ":" -f1 | sed -e 's/^[[:space:]]*//' )
-
 docker run --detach \
   --name jupyterhub \
   -p 80:8000 \
@@ -34,5 +31,5 @@ docker run --detach \
   -e OAUTH_CALLBACK_URL=http://${DNSNAME}/hub/oauth_callback \
   -e GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID} \
   -e GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET} \
-  -e "constraint:node==$NODE_NAME" \
+  -e "constraint:node==*n1" \
   jupyterhub-carina
