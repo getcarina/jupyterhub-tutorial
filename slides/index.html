@@ -547,6 +547,38 @@ Nodes: 3
         </aside>
       </section>
 
+      <section>
+        <h2>Lab</h2>
+        <ol>
+          <li>Run a <code>rackerlabs/whoa</code> container</li>
+          <li>Create a data volume container (DVC) on the same segment</li>
+          <li>Use <code>docker cp</code> to upload a self-signed TLS certificate to the DVC</li>
+          <li>
+            Run an <code>nginx:1.9</code> container that:
+            <ul>
+              <li>mounts the volume from the DVC</li>
+              <li>publishes port 443 and uses your TLS certificate</li>
+              <li>proxies traffic to the <code>rackerlabs/whoa</code> container</li>
+            </ul>
+          </li>
+        </ol>
+        <hr>
+        <ul>
+          <li><em>Resources:</em> <a href=""><code>openssl</code>-fu</a> | <a href="">NGINX configuration template</a></li>
+          <li><em>Hint:</em> <code>docker ps</code> will show which segment each container is on</li>
+        </ul>
+        <aside class="notes">
+          <pre><code data-trim class="bash">
+docker run -d --name backend rackerlabs/whoa
+docker create --name certs -v /certificates -e affinity:container==whoa busybox
+docker cp ./private-key.pem certs:/certificates/private-key.pem
+docker cp ./public-certificate.pem certs:/certificates/public-certificate.pem
+docker build -t my-nginx -f resources/Dockerfile.nginx --build-arg affinity:container==certs resources/
+docker run -d --name my-nginx --volumes-from certs -p 443:443 my-nginx
+          </code></pre>
+        </aside>
+      </section>
+
 <!-- ********************************************************************** -->
 
         <section id="break">
