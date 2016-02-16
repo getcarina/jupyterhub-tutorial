@@ -10,7 +10,7 @@ c.DockerSpawner.tls_verify = True
 c.DockerSpawner.tls_ca = "/etc/docker/ca.pem"
 c.DockerSpawner.tls_cert = "/etc/docker/server-cert.pem"
 c.DockerSpawner.tls_key = "/etc/docker/server-key.pem"
-c.DockerSpawner.use_internal_ip = True
+c.DockerSpawner.container_ip = "0.0.0.0"
 c.DockerSpawner.hub_ip_connect = os.environ["HUB_IP_CONNECT"]
 
 c.JupyterHub.authenticator_class = "oauthenticator.GitHubOAuthenticator"
