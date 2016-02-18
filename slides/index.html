@@ -215,13 +215,22 @@
 
         <section>
           <h3>Docker Client</h3>
-          <p>The CLI for the API.</p>
+          <p>The CLI for the Docker API</p>
           <ul>
             <li>Containers</li>
             <li>Images</li>
             <li>Volumes</li>
             <li>Networks</li>
             <li>etc</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Containers</h2>
+          <ul>
+            <li>cgroups for limiting resource usage</li>
+            <li>namespaces for isolation</li>
+            <li>union filesystem for a layered filesystem</li>
           </ul>
         </section>
 
@@ -253,13 +262,7 @@ docker run --interactive --tty alpine:3.3 /bin/sh
           <h3>Containers</h3>
           <pre><code data-trim class="bash">
 uname -a
-hostname
-more /etc/hosts
-ip a
 ps
-echo "Hello Docker" > README.txt
-more README.txt
-ls
 exit
           </code></pre>
         </section>
@@ -274,7 +277,6 @@ docker start $(docker ps -l -q)
 docker ps
 docker attach $(docker ps -l -q)
 # Press enter if you just get a blank line
-more README.txt
 exit
 docker rm $(docker ps -l -q)
           </code></pre>
@@ -284,9 +286,10 @@ docker rm $(docker ps -l -q)
           <h3>Containers</h3>
           <pre><code data-trim class="bash">
 docker run --detach --name ghost --publish 8080:2368 ghost:0.7
+docker logs ghost
 open http://$(docker port ghost 2368/tcp)
 docker ps
-docker rm --force $(docker ps -l -q)
+docker rm --force ghost
           </code></pre>
         </section>
 
@@ -310,13 +313,22 @@ docker rm --force $(docker ps -l -q)
         </section>
 
         <section>
+          <h2>Container Resources</h2>
+          <ul>
+            <li><a href="https://docs.docker.com/engine/userguide/containers/usingdocker/" target="_blank">Using Docker</a></li>
+            <li><a href="https://docs.docker.com/engine/understanding-docker/" target="_blank">Understand the architecture</a></li>
+            <li><a href="https://docs.docker.com/engine/reference/run/" target="_blank">Docker run reference</a></li>
+            <li><a href="https://docs.docker.com/engine/reference/commandline/cli/" target="_blank">Use the Docker command line</a></li>
+          </ul>
+        </section>
+
+        <section>
           <h2>Images</h2>
           <ul>
             <li>You can kinda sorta think of it like an image for a VM, but really it's a very different beast</li>
             <li>Layered filesystems</li>
             <li>Top layer is rw and the layers below are ro</li>
             <li>There's an analogy to Git but we won't be using <code>docker commit</code></li>
-            <li><a href="https://hub.docker.com/" target="_blank">Docker Hub</a></li>
           </ul>
         </section>
 
@@ -325,7 +337,6 @@ docker rm --force $(docker ps -l -q)
           <pre><code data-trim class="bash">
 docker images
 docker pull alpine:3.3
-docker search python
           </code></pre>
         </section>
 
@@ -345,8 +356,8 @@ docker search python
 FROM gliderlabs/alpine:3.3
 MAINTAINER Firstname Lastname "firstname.lastname@example.com"
 
-ARG BUILD_TIME_MSG="Default Build Time Message"
-ENV RUN_TIME_MSG="Default Run Time Message"
+ARG BUILD_TIME_VAR="Default Build Time Message"
+ENV RUN_TIME_VAR="Default Run Time Message"
 
 RUN apk --no-cache add nginx
 
@@ -354,7 +365,7 @@ COPY entrypoint.sh /entrypoint.sh
 
 WORKDIR /usr/share/nginx/html/
 
-RUN echo $BUILD_TIME_MSG >> index.html
+RUN echo $BUILD_TIME_VAR >> index.html
 
 EXPOSE 80
 
@@ -370,7 +381,7 @@ ENTRYPOINT ["/entrypoint.sh"]
 
 set -euo pipefail
 
-echo $RUN_TIME_MSG >> /usr/share/nginx/html/index.html
+echo $RUN_TIME_VAR >> /usr/share/nginx/html/index.html
 nginx -g daemon off;
           </code></pre>
         </section>
@@ -378,16 +389,135 @@ nginx -g daemon off;
         <section>
           <h3>Images</h3>
           <pre><code data-trim class="bash">
-docker build --build-arg BUILD_TIME_MSG="Chop Wood," --tag="nginx-message:1.0" .
+docker build --build-arg BUILD_TIME_VAR="Chop Wood," --tag="nginx-message:1.0" .
 docker images
 docker run --detach \
   --name nginx \
   --publish 80:80 \
-  --env RUN_TIME_MSG="Carry Water" \
+  --env RUN_TIME_VAR="Carry Water" \
   nginx-message:1.0
 open http://$(docker port nginx 80/tcp)
 docker rm --force nginx
           </code></pre>
+        </section>
+
+        <section>
+          <h2>Image Resources</h2>
+          <ul>
+            <li><a href="https://hub.docker.com/" target="_blank">Docker Hub</a></li>
+            <li><a href="https://docs.docker.com/engine/userguide/containers/dockerimages/" target="_blank">Build your own images</a></li>
+            <li><a href="https://docs.docker.com/engine/reference/builder/" target="_blank">Dockerfile reference</a></li>
+            <li><a href="https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/" target="_blank">Best practices for writing Dockerfiles</a></li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Volumes</h2>
+          <ul>
+            <li>A specially-designated directory within one or more containers that bypasses the container's Union File System</li>
+            <li>Data is written directly to the segment</li>
+            <li>Designed to persist data, independent of the container’s life cycle</li>
+            <li>Can be shared and reused among containers</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Volumes</h3>
+          <pre><code data-trim class="bash">
+docker create --name data --volume /var/lib/mysql cirros /bin/true
+docker ps -l
+docker run --detach \
+  --name mysql \
+  --volumes-from data \
+  --env MYSQL_ROOT_PASSWORD=my-root-pw \
+  --env MYSQL_DATABASE=test \
+  --env MYSQL_USER=test-user \
+  --env MYSQL_PASSWORD=test-password \
+  mysql:5.6
+docker run --rm \
+  --volumes-from data \
+  cirros \
+  ls /var/lib/mysql
+          </code></pre>
+        </section>
+
+        <section>
+          <h3>Volumes</h3>
+          <pre><code data-trim class="bash">
+docker rm -f mysql
+docker run --rm \
+  --volumes-from data \
+  cirros \
+  ls /var/lib/mysql
+docker rm --volumes data
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Image Resources</h2>
+          <ul>
+            <li><a href="https://getcarina.com/docs/tutorials/data-volume-containers/" target="_blank">Use data volume containers</a> (Carina)</li>
+            <li><a href="https://docs.docker.com/engine/userguide/containers/dockervolumes/" target="_blank">Manage data in containers</a></li>
+            <li>Why didn't we use <code>docker volume</code>? See <a href="https://github.com/docker/swarm/issues/1529" target="_blank">The utility of creating a volume per node</a></li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Networks</h2>
+          <ul>
+            <li>Added to Carina last Monday!</li>
+            <li>A secured and isolated environment for the containers in a network</li>
+            <li>Automatic name resolution of containers using DNS</li>
+            <li>The ability to dynamically connect containers to and disconnect containers from multiple networks</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Networks</h3>
+          <pre><code data-trim class="bash">
+docker network create mynet
+docker network ls
+docker run \
+  --detach \
+  --name mysql \
+  --net mynet \
+  --env MYSQL_ROOT_PASSWORD=my-root-pw \
+  mysql:5.6
+docker port mysql 3306
+          </code></pre>
+        </section>
+
+        <section>
+          <h3>Networks</h3>
+          <pre><code data-trim class="bash">
+docker run --detach \
+  --name wordpress \
+  --net mynet \
+  --publish 80:80 \
+  --env WORDPRESS_DB_HOST=mysql \
+  --env WORDPRESS_DB_PASSWORD=my-root-pw \
+  wordpress:4.4
+docker port wordpress 80
+docker rm -f mysql wordpress
+          </code></pre>
+        </section>
+
+        <section>
+          <h3>Networks</h3>
+          <pre><code data-trim class="bash">
+docker ps
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Network Resources</h2>
+          <ul>
+            <li><a href="https://getcarina.com/blog/overlay-networks/" target="_blank">Overlay networks</a> (Carina)</li>
+            <li><a href="https://docs.docker.com/engine/userguide/networking/dockernetworks/" target="_blank">Understand Docker container networks</a></li>
+            <li><a href="https://docs.docker.com/engine/userguide/networking/work-with-networks/" target="_blank">Work with network commands</a></li>
+            <li><a href="https://docs.docker.com/engine/userguide/networking/get-started-overlay/" target="_blank">Get started with overlay networking</a></li>
+            <li><a href="https://docs.docker.com/engine/userguide/networking/configure-dns/" target="_blank">Embedded DNS server in user-defined networks</a></li>
+          </ul>
         </section>
 
 <!-- ********************************************************************** -->
@@ -420,7 +550,7 @@ docker rm --force nginx
         </section>
 
         <section>
-          <h3>Grow Your Cluster</h3>
+            <h3>Grow Your Cluster</h3>
           <pre><code class="bash" data-trim data-noescape>
 $ <span class="fragment">carina ls</span>
 <span class="fragment">ClusterName        Flavor             Segments           AutoScale          Status
