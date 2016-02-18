@@ -550,30 +550,55 @@ docker ps
         </section>
 
         <section>
-          <h3>Carina CLI</h3>
-          <p><a href="https://getcarina.com/docs/getting-started/getting-started-carina-cli/">See installation and configuration instructions</a></p>
+            <section>
+            <h3>Carina CLI</h3>
+            <p><a href="https://getcarina.com/docs/getting-started/getting-started-carina-cli/">See installation and configuration instructions</a></p>
 
-            <h4>List your Clusters</p>
-            <pre><code class="bash" data-trim data-noescape>
-  $ carina ls
-ClusterName       Flavor           Segments           AutoScale          Status
-mycluster         container1-4G    1                  false              active
-            </code></pre>
+            <div class="fragment">
+              <h4>List your Clusters</p>
+              <pre><code class="bash" data-trim data-noescape>
+$ carina ls
+<span class="fragment">ClusterName       Flavor           Segments           AutoScale          Status
+mycluster         container1-4G    1                  false              activeM</span>
+              </code></pre>
+            </div>
 
-          <h4>Create a Cluster</h4>
-          <pre><code class="bash" data-trim data-noescape>
+            <div class="fragment">
+              <h4>Create a Cluster</h4>
+              <pre><code class="bash" data-trim data-noescape>
 $ carina create --wait foobar
-ClusterName     Flavor          Segments         AutoScale        Status
-foobar          container1-4G   1                false            active
-          </code></pre>
+<span class="fragment">ClusterName     Flavor          Segments         AutoScale        Status
+foobar          container1-4G   1                false            active</span>
+              </code></pre>
+            </div>
 
-          <h4>Load the Docker environment for your Cluster</h4>
-          <pre><code class="bash" data-trim data-noescape>
+            <div class="fragment">
+              <h4>Load the Docker environment for your Cluster</h4>
+              <pre><code class="bash" data-trim data-noescape>
 $ eval $(carina env mycluster)
-$ docker ps
-CONTAINER ID      IMAGE      COMMAND                  CREATED             STATUS
-ab668e03cafb      logjam     "tail -f /var/log/foo"   3 seconds ago       Up 3 seconds
-          </code></pre>
+<span class="fragment">$ docker ps</span>
+<span class="fragment">CONTAINER ID      IMAGE      COMMAND                  CREATED             STATUS
+ab668e03cafb      logjam     "tail -f /var/log/foo"   3 seconds ago       Up 3 seconds</span>
+              </code></pre>
+            </div>
+          </section>
+
+          <section>
+            <h4>Grow Your Cluster</h4>
+            <pre><code class="bash" data-trim data-noescape>
+$ carina ls
+<span class="fragment">ClusterName        Flavor             Segments           AutoScale          Status
+mycluster          container1-4G      1                  false              active</span>
+<span class="fragment">
+$ carina grow --by 1 mycluster</span>
+<span class="fragment">ClusterName        Flavor             Segments           AutoScale          Status
+mycluster          container1-4G      1                  false              growing</span>
+<span class="fragment">
+$ carina ls</span>
+<span class="fragment">ClusterName        Flavor             Segments           AutoScale          Status
+mycluster          container1-4G      2                  false              active</span>
+            </code></pre>
+          </section>
 
           <aside class="notes">
             <ul>
@@ -585,32 +610,8 @@ ab668e03cafb      logjam     "tail -f /var/log/foo"   3 seconds ago       Up 3 s
           </aside>
         </section>
 
-        <section>
-            <h3>Grow Your Cluster</h3>
-          <pre><code class="bash" data-trim data-noescape>
-$ <span class="fragment">carina ls</span>
-<span class="fragment">ClusterName        Flavor             Segments           AutoScale          Status
-mycluster          container1-4G      1                  false              active</span>
-<span class="fragment">
-$ carina grow --by 1 mycluster</span>
-<span class="fragment">ClusterName        Flavor             Segments           AutoScale          Status
-mycluster          container1-4G      1                  false              growing</span>
-<span class="fragment">
-$ carina ls</span>
-<span class="fragment">ClusterName        Flavor             Segments           AutoScale          Status
-mycluster          container1-4G      2                  false              active</span>
-          </code></pre>
-
-          <aside class="notes">
-            <ul>
-              <li>All togther now!</li>
-              <li>Now we have 2 segments, let's fill them up with stuff.</li>
-            </ul>
-          </aside>
-        </section>
-
       <section>
-        <h3>Automatic Scheduling</h3>
+        <h3>Swarm Scheduling in Action</h3>
         <pre><code class="bash" data-trim data-noescape>
 $ <span class="fragment">docker run --name whoa1 --detach --publish 80:8080 rackerlabs/whoa</span>
 <span class="fragment">44aff6801d136ae7ba49ad074d94a7ba94740326f8d9099d7830ec8095abdf72</span>
@@ -630,6 +631,7 @@ $ curl $(docker port whoa1)</span>
 
         <aside class="notes">
           <ul>
+            <li>Now we have 2 segments, let's fill them up with stuff.</li>
             <li>Each segment is a docker host</li>
             <li>Segment IP Address</li>
             <li>Publish to same port across segments</li>
