@@ -238,7 +238,6 @@
           <h3>Docker Environment</h3>
           <pre><code data-trim class="bash">
 alias de="env | grep DOCKER_"
-alias ds="docker ps"
 
 cd Downloads/mycluster
 more README.md
@@ -253,7 +252,7 @@ dvm use
           <pre><code data-trim class="bash">
 docker
 docker version
-docker ps # "ps" because it can be thought of like the Linux ps command
+docker ps
 docker run --interactive --tty alpine:3.3 /bin/sh
           </code></pre>
         </section>
@@ -350,10 +349,21 @@ docker pull alpine:3.3
         </section>
 
         <section>
-          <h3>Dockerfile</h3>
-          <p>Create a file called <code>Dockerfile</code></p>
+          <h3>Images</h3>
           <pre><code data-trim class="bash">
-FROM gliderlabs/alpine:3.3
+mkdir workshop
+cd workshop
+touch Dockerfile
+touch entrypoint.sh
+chmod u+x entrypoint.sh
+          </code></pre>
+        </section>
+
+        <section>
+          <h3>Dockerfile</h3>
+          <p>Edit <code>Dockerfile</code></p>
+          <pre><code data-trim class="bash">
+FROM alpine:3.3
 MAINTAINER Firstname Lastname "firstname.lastname@example.com"
 
 ARG BUILD_TIME_VAR="Default Build Time Message"
@@ -370,19 +380,22 @@ RUN echo $BUILD_TIME_VAR >> index.html
 EXPOSE 80
 
 ENTRYPOINT ["/entrypoint.sh"]
+CMD ["Default CMD Message"]
           </code></pre>
         </section>
 
         <section>
           <h3>Entrypoint Script</h3>
-          <p>Create a file called <code>entrypoint.sh</code> and make it executable</p>
+          <p>Edit <code>entrypoint.sh</code></p>
           <pre><code data-trim class="bash">
-#!/bin/sh
+#!/bin/bash
 
 set -euo pipefail
 
 echo $RUN_TIME_VAR >> /usr/share/nginx/html/index.html
-nginx -g daemon off;
+echo $1 >> /usr/share/nginx/html/index.html
+
+exec nginx -g "daemon off;"
           </code></pre>
         </section>
 
@@ -394,8 +407,9 @@ docker images
 docker run --detach \
   --name nginx \
   --publish 80:80 \
-  --env RUN_TIME_VAR="Carry Water" \
-  nginx-message:1.0
+  --env RUN_TIME_VAR="Carry Water," \
+  nginx-message:1.0 \
+  "Mow Lawn"
 open http://$(docker port nginx 80/tcp)
 docker rm --force nginx
           </code></pre>
