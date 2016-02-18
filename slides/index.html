@@ -110,6 +110,37 @@
         </section>
 
         <section>
+          <h3>Log In</h3>
+          <p>Log in to the Carina GUI.</p>
+          <ul>
+            <li><a href="https://app.getcarina.com/" target="_blank">Log In</a></li>
+            <li>Use your Rackspace public cloud username/password</li>
+            <li>Don't create a cluster just yet</li>
+            <li>Note your API Key under your username in the top right corner</li>
+          </ul>
+        </section>
+
+        <section id="installation">
+          <h3>Installation</h3>
+          <ol>
+            <li>Docker Version Manager</li>
+            <ol>
+              <li>Utility for managing Docker client versions</li>
+              <li><a href="https://getcarina.com/docs/tutorials/docker-version-manager/" target="_blank">Manage Docker client versions with dvm</a>
+              <li>Do the <b>Install dvm</b> section only</li>
+              <li><code>dvm install 1.10.1</code></li>
+            </ol>
+            <li>Carina CLI</li>
+            <ol>
+              <li>The CLI for the Caria API</li>
+              <li><a href="https://getcarina.com/docs/getting-started/getting-started-carina-cli/" target="_blank">Getting started with the Carina CLI</a>
+              <li>Do the <b>Download and install the CLI</b> and <b>Configure with Carina credentials</b> sections only</li>
+              <li><code>carina ls</code></li>
+            </ol>
+          </ol>
+        </section>
+
+        <section>
           <h3>Site Overview</h3>
           <p>Get a feel for the Carina website.</p>
           <ul>
@@ -130,17 +161,8 @@
         </section>
 
         <section>
-          <h3>Log In</h3>
-          <p>Log in to the Carina GUI.</p>
-          <ul>
-            <li><a href="https://app.getcarina.com/" target="_blank">Log In</a></li>
-            <li>Use your Rackspace public cloud username/password</li>
-          </ul>
-        </section>
-
-        <section>
           <h3>Add a Cluster</h3>
-          <p>Setup a cluster where we can run Docker containers.</p>
+          <p>Setup a cluster where we can run Docker containers</p>
           <ul>
             <li>Add Cluster</li>
               <ul>
@@ -154,6 +176,9 @@
                 <li>List files</li>
               </ul>
           </ul>
+          <aside class="notes">
+            This is the last time we touch the GUI. Everything is on the command line from here on out.
+          </aside>
         </section>
 
 <!-- ********************************************************************** -->
@@ -197,14 +222,6 @@
             <li>Volumes</li>
             <li>Networks</li>
             <li>etc</li>
-          </ul>
-        </section>
-
-        <section>
-          <h3>Docker Version Manager</h3>
-          <p>Utility for managing Docker client versions.</p>
-          <ul>
-            <li>Installation instructions at <a href="https://getcarina.com/docs/tutorials/docker-version-manager/" target="_blank">Manage Docker client versions with dvm</a></li>
           </ul>
         </section>
 
