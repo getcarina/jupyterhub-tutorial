@@ -51,7 +51,7 @@
         </section>
 
         <section id="instructors">
-          <h1>Instructors</h1>
+          <h3>Instructors</h3>
           <center>
             <table>
               <tbody>
@@ -76,8 +76,8 @@
           </center>
         </section>
 
-        <section id="goal">
-          <h1>Goals</h1>
+        <section id="goals">
+          <h3>Goals</h3>
           <p>Learn Docker basics and Docker Swarm fundamentals. To exercise these fundamentals the participants will deploy JupyterHub on <a href="https://getcarina.com/" target="_blank">Carina</a>, a hosted Docker Swarm environment. Along the way they'll also gain a better understanding of Jupyter, an open source web application that allows you to create and share documents that contain live code, equations, visualizations, and explanatory text.</p>
           <aside class="notes">
             <ul>
@@ -90,7 +90,7 @@
 
         <section>
           <span style="white-space: nowrap;">
-            <h1>Agenda</h1>
+            <h3>Agenda</h3>
             <ol>
               <li><a href="#/setup">Setup</a></li>
               <li><a href="#/docker">Docker</a></li>
@@ -110,7 +110,7 @@
         </section>
 
         <section>
-          <h1>Site Overview</h1>
+          <h3>Site Overview</h3>
           <p>Get a feel for the Carina website.</p>
           <ul>
             <li><a href="https://getcarina.com/" target="_blank">Carina</a></li>
@@ -130,7 +130,7 @@
         </section>
 
         <section>
-          <h1>Log In</h1>
+          <h3>Log In</h3>
           <p>Log in to the Carina GUI.</p>
           <ul>
             <li><a href="https://app.getcarina.com/" target="_blank">Log In</a></li>
@@ -139,7 +139,7 @@
         </section>
 
         <section>
-          <h1>Add a Cluster</h1>
+          <h3>Add a Cluster</h3>
           <p>Setup a cluster where we can run Docker containers.</p>
           <ul>
             <li>Add Cluster</li>
@@ -163,7 +163,7 @@
         </section>
 
         <section>
-          <h1>Comparison</h1>
+          <h3>Comparison</h3>
           <table>
             <tr>
               <td><img src="img/what-is-docker-diagram.png" width="400" height="auto"></td>
@@ -177,7 +177,7 @@
         </section>
 
         <section>
-          <h1>Benefits</h1>
+          <h3>Benefits</h3>
           <ul>
             <li>Better resource utilization</li>
             <li>Application packaging (Docker images)</li>
@@ -189,19 +189,19 @@
         </section>
 
         <section>
-          <h1>Docker Client</h1>
+          <h3>Docker Client</h3>
           <p>The CLI for the API.</p>
           <ul>
             <li>Containers</li>
             <li>Images</li>
-            <li>Networks</li>
             <li>Volumes</li>
+            <li>Networks</li>
             <li>etc</li>
           </ul>
         </section>
 
         <section>
-          <h1>Docker Version Manager</h1>
+          <h3>Docker Version Manager</h3>
           <p>Utility for managing Docker client versions.</p>
           <ul>
             <li>Installation instructions at <a href="https://getcarina.com/docs/tutorials/docker-version-manager/" target="_blank">Manage Docker client versions with dvm</a></li>
@@ -209,7 +209,7 @@
         </section>
 
         <section>
-          <h2>Docker Environment</h2>
+          <h3>Docker Environment</h3>
           <pre><code data-trim class="bash">
 alias de="env | grep DOCKER_"
 alias ds="docker ps"
@@ -223,7 +223,7 @@ dvm use
         </section>
 
         <section>
-          <h2>Containers</h2>
+          <h3>Containers</h3>
           <pre><code data-trim class="bash">
 docker
 docker version
@@ -233,7 +233,7 @@ docker run --interactive --tty alpine:3.3 /bin/sh
         </section>
 
         <section>
-          <h2>Containers</h2>
+          <h3>Containers</h3>
           <pre><code data-trim class="bash">
 uname -a
 hostname
@@ -248,7 +248,7 @@ exit
         </section>
 
         <section>
-          <h2>Containers</h2>
+          <h3>Containers</h3>
           <pre><code data-trim class="bash">
 docker ps
 docker ps --latest
@@ -264,7 +264,7 @@ docker rm $(docker ps -l -q)
         </section>
 
         <section>
-          <h2>Containers</h2>
+          <h3>Containers</h3>
           <pre><code data-trim class="bash">
 docker run --detach --name ghost --publish 8080:2368 ghost:0.7
 open http://$(docker port ghost 2368/tcp)
@@ -274,7 +274,7 @@ docker rm --force $(docker ps -l -q)
         </section>
 
         <section>
-          <h2>Lab</h2>
+          <h3>Lab</h3>
           <ol>
             <li>Run an <code>nginx:1.9</code> container in detached mode</li>
             <li>Bind the container port 80 to the host port 80</li>
@@ -293,7 +293,7 @@ docker rm --force $(docker ps -l -q)
         </section>
 
         <section>
-          <h1>Images</h1>
+          <h2>Images</h2>
           <ul>
             <li>You can kinda sorta think of it like an image for a VM, but really it's a very different beast</li>
             <li>Layered filesystems</li>
@@ -304,7 +304,7 @@ docker rm --force $(docker ps -l -q)
         </section>
 
         <section>
-          <h2>Images</h2>
+          <h3>Images</h3>
           <pre><code data-trim class="bash">
 docker images
 docker pull alpine:3.3
@@ -313,7 +313,7 @@ docker search python
         </section>
 
         <section>
-          <h1>Dockerfile</h1>
+          <h3>Dockerfile</h3>
           <ul>
             <li>Uses a basic DSL with instructions for building Docker images</li>
             <li>Provides a repeatable, transparent, and idempotent mechanism for creating images</li>
@@ -322,7 +322,7 @@ docker search python
         </section>
 
         <section>
-          <h2>Dockerfile</h2>
+          <h3>Dockerfile</h3>
           <p>Create a file called <code>Dockerfile</code></p>
           <pre><code data-trim class="bash">
 FROM gliderlabs/alpine:3.3
@@ -346,7 +346,7 @@ ENTRYPOINT ["/entrypoint.sh"]
         </section>
 
         <section>
-          <h2>Entrypoint Script</h2>
+          <h3>Entrypoint Script</h3>
           <p>Create a file called <code>entrypoint.sh</code> and make it executable</p>
           <pre><code data-trim class="bash">
 #!/bin/sh
@@ -359,7 +359,7 @@ nginx -g daemon off;
         </section>
 
         <section>
-          <h2>Images</h2>
+          <h3>Images</h3>
           <pre><code data-trim class="bash">
 docker build --build-arg BUILD_TIME_MSG="Chop Wood," --tag="nginx-message:1.0" .
 docker images
@@ -381,7 +381,7 @@ docker rm --force nginx
         </section>
 
         <section>
-          <h1>Docker Swarm</h1>
+          <h2>Docker Swarm</h2>
           <ul>
             <li>Many Docker Hosts, one API endpoint</li>
             <li>New primitives (e.g. affinities)</li>
@@ -403,7 +403,7 @@ docker rm --force nginx
         </section>
 
         <section>
-          <h1>Grow Your Cluster</h1>
+          <h3>Grow Your Cluster</h3>
           <pre><code class="bash" data-trim data-noescape>
 $ <span class="fragment">carina ls</span>
 <span class="fragment">ClusterName        Flavor             Segments           AutoScale          Status
@@ -447,7 +447,7 @@ $ curl $(docker port whoa1)</span>
       </section>
 
       <section>
-        <h2>Where does it run?</h2>
+        <h3>Where does it run?</h3>
 
         <p>Factors that implicitly influence container placement</p>
 
@@ -465,7 +465,7 @@ $ curl $(docker port whoa1)</span>
       </section>
 
       <section>
-        <h2>Constraints and Affinity</h2>
+        <h3>Constraints and Affinity</h3>
 
         <p>Explicitly influence where your containers run</p>
         <p>Set by environment variables or build arguments</p>
@@ -503,7 +503,7 @@ $ docker build --build-arg affinity:image==myapp -t myapp:v2 .
       </section>
 
       <section>
-        <h2>Carina Clusters</h2>
+        <h3>Carina Clusters</h3>
 
         <ul>
           <li>1 to 3 <em>"segments"</em>; LXC containers on a physical host</li>
@@ -532,7 +532,7 @@ Nodes: 3
       </section>
 
       <section>
-        <h2>Carina Restrictions</h2>
+        <h3>Carina Restrictions</h3>
         <ul>
           <li>Volumes only allowed within <code>/var/lib/docker</code></li>
           <li>No <code>--privileged</code> containers or <code>--cap-add</code>/<code>--cap-drop</code></li>
@@ -548,7 +548,7 @@ Nodes: 3
       </section>
 
       <section>
-        <h2>Lab</h2>
+        <h3>Lab</h3>
         <ol>
           <li>Run a <code>rackerlabs/whoa</code> container</li>
           <li>Create a data volume container (DVC) on the same segment</li>
@@ -592,33 +592,29 @@ docker run -d --name my-nginx --volumes-from certs -p 443:443 my-nginx
         </section>
 
         <section>
-          <h1>Outline</h1>
+          <h2>Outline</h2>
           <ul>
-            <!--
-              Notes:
-
-              The notebook gives you an environment where you can mix and match
-              code, prose, and outputs within a document that you can share with
-              others
-
-            -->
-
             <li>Interactive Literate Coding</li>
             <li>Collaboration</li>
             <li>Visualization</li>
             <li>Rich objects</li>
             <li>Share-able documents</li>
           </ul>
+          <aside class="notes">
+              The notebook gives you an environment where you can mix and match
+              code, prose, and outputs within a document that you can share with
+              others
+          </aside>
         </section>
 
         <section>
-          <h1>Living Code</h1>
+          <h3>Living Code</h3>
           <img src="img/interactive-notebook.png"></img>
         </section>
 
         <section>
-          <h1>Let's try it live!</h1>
-          <h2><a href="https://tmpnb.org">tmpnb.org</a></h2>
+          <h2>Let's try it live!</h2>
+          <h3><a href="https://tmpnb.org">tmpnb.org</a></h3>
         </section>
 
 <!-- ********************************************************************** -->
@@ -628,7 +624,7 @@ docker run -d --name my-nginx --volumes-from certs -p 443:443 my-nginx
         </section>
 
         <section>
-          <h1>JupyterHub Architecture</h1>
+          <h2>JupyterHub Architecture</h2>
             <ul>
               <li>Notebook servers for users</li>
               <li>Configurable HTTP Proxy</li>
@@ -637,7 +633,7 @@ docker run -d --name my-nginx --volumes-from certs -p 443:443 my-nginx
         </section>
 
         <section>
-          <h1>Outline</h1>
+          <h2>Outline</h2>
           <ul>
             <li>Create a new cluster</li>
             <li>Clone the repo for this preso</li>
@@ -646,7 +642,7 @@ docker run -d --name my-nginx --volumes-from certs -p 443:443 my-nginx
         </section>
 
         <section>
-          <h2>Create a new cluster</h2>
+          <h3>Create a new cluster</h3>
           <pre><code data-trim class="bash">
 carina create jupyterhub --wait
           </code></pre>
@@ -654,14 +650,14 @@ carina create jupyterhub --wait
 
 <!-- That's one long repo name for the board -->
         <section>
-          <h2>Clone this repo</h2>
+          <h3>Clone this repo</h3>
           <pre><code data-trim class="bash">
 git clone https://github.com/everett-toews/jupyterhub-on-docker-swarm
           </code></pre>
         </section>
 
         <section>
-          <h2>Launch</h2>
+          <h3>Launch</h3>
           <pre><code data-trim class="bash">
 cd jupyterhub-on-docker-swarm # if you're not already there
 cd jupyterhub-launch
@@ -679,7 +675,10 @@ carina env jupyterhub
         </section>
 
         <section>
-          <h1>Bye Bye</h1>
+          <h1>Thanks!</h1>
+          <ul>
+            <li><a href="https://rax.io/workshops-feedback" target="_blank">Feedback survey</a></li>
+          </ul>
         </section>
 
 <!-- ********************************************************************** -->

@@ -16,8 +16,8 @@ The Jupyter Notebook server is a web application that allows you to create and s
 Total Time: 3 hours
 
 Setup - 15 minutes
-Docker - 30 minutes
-Docker Swarm and Carina - 55 minutes
+Docker - 40 minutes
+Docker Swarm and Carina - 45 minutes
 Break - 30 minutes (15 minutes of break intended, 15 minutes for catch up)
 Notebook - 10 minutes
 JupyterHub on Carina - 50 minutes
