@@ -215,7 +215,7 @@
             <li>Reproducible environments</li>
             <li>Composable</li>
             <li>Multi-Cloud</li>
-            <li>Ecourages 🐮🐮🐮</li>
+            <li>Ecourages ���</li>
           </ul>
         </section>
 
@@ -745,69 +745,58 @@ c715e66154c8        carina/consul       "/bin/consul agent -b"   3 days ago     
         </section>
 
         <section>
-          <img src="img/carina-topology.png"/>
+        <h3>Carina CLI</h3>
+        <p><a href="https://getcarina.com/docs/getting-started/getting-started-carina-cli/">See installation and configuration instructions</a></p>
+
+        <div class="fragment">
+          <h4>List your Clusters</p>
+          <pre><code class="bash" data-trim data-noescape>
+$ carina ls
+<span class="fragment">ClusterName       Flavor           Segments           AutoScale          Status
+mycluster         container1-4G    1                  false              active</span>
+          </code></pre>
+        </div>
+
+        <div class="fragment">
+          <p style="font-size:.8em; font-style:italic">* DO NOT run the commands below right now, they take a few minutes to execute.
+
+          <h4>Create a Cluster*</h4>
+          <pre><code class="bash" data-trim data-noescape>
+$ carina create --wait foobar
+<span class="fragment">ClusterName     Flavor          Segments         AutoScale        Status
+foobar          container1-4G   1                false            active</span>
+          </code></pre>
+        </div>
+
+          <div class="fragment">
+            <h4>Rebuild a Cluster*</h4>
+            <pre><code class="bash" data-trim data-noescape>
+$ carina rebuild foobar
+<span class="fragment">ClusterName     Flavor          Segments         AutoScale        Status
+foobar          container1-4G   1                false            rebuilding-swarm</span>
+            </code></pre>
+          </div>
 
           <aside class="notes">
             <ul>
-              <li>Handles the setup and managment</li>
-              <li>SEGMENTS! SEGMENTS! SEGMENTS!</li>
-              <li>This is how we scale</li>
-              <li>Walkthrough flow of commands</li>
+              <li>Websites are cool but command-line tools are cooler.
+                  Everything you can do with the site, you can do through the cli</li>
+              <li>Behind the scenes carina is downloading your credentials zip</li>
+              <li>Nice shorthand for the source docker.env command used earlier</li>
             </ul>
           </aside>
         </section>
 
         <section>
-            <section>
-            <h3>Carina CLI</h3>
-            <p><a href="https://getcarina.com/docs/getting-started/getting-started-carina-cli/">See installation and configuration instructions</a></p>
-
-            <div class="fragment">
-              <h4>List your Clusters</p>
-              <pre><code class="bash" data-trim data-noescape>
-$ carina ls
-<span class="fragment">ClusterName       Flavor           Segments           AutoScale          Status
-mycluster         container1-4G    1                  false              active</span>
-              </code></pre>
-            </div>
-
-            <div class="fragment">
-              <h4>Create a Cluster</h4>
-              <pre><code class="bash" data-trim data-noescape>
-$ carina create --wait foobar
-<span class="fragment">ClusterName     Flavor          Segments         AutoScale        Status
-foobar          container1-4G   1                false            active</span>
-              </code></pre>
-            </div>
-
-            <div class="fragment">
-              <h4>Rebuild a Cluster</h4>
-              <pre><code class="bash" data-trim data-noescape>
-$ carina rebuild foobar
-<span class="fragment">ClusterName     Flavor          Segments         AutoScale        Status
-foobar          container1-4G   1                false            rebuilding-swarm</span>
-              </code></pre>
-            </div>
-
-            <aside class="notes">
-              <ul>
-                <li>Websites are cool but command-line tools are cooler.
-                    Everything you can do with the site, you can do through the cli</li>
-                <li>Behind the scenes carina is downloading your credentials zip</li>
-                <li>Nice shorthand for the source docker.env command used earlier</li>
-              </ul>
-            </aside>
-          </section>
-
-          <section>
-            <h4>Load the Docker environment for your Cluster</h4>
-            <pre><code class="bash" data-trim data-noescape>
+          <h3>Carina CLI Continued</h3>
+          <h4>Load the Docker environment for your Cluster</h4>
+          <pre><code class="bash" data-trim data-noescape>
 $ carina env mycluster
-<span class="fragment">source /Users/caro8994/.carina/clusters/carolynvsrax/mycluster/docker.env
+source /Users/caro8994/.carina/clusters/carolynvsrax/mycluster/docker.env
 # Run the command below to get your Docker environment variables set:
-# eval $(carina env mycluster)</span>
+# eval $(carina env mycluster)
 
-<span class="fragment">PS> carina env mycluster --shell powershell
+PS> carina env mycluster --shell powershell
 . C:\Users\caro8994\carina\clusters\carolynvsrax\mycluster\docker.ps1
 # Run the command below to get your Docker environment variables set:
 # carina env mycluster --shell powershell | iex</span>
@@ -818,12 +807,13 @@ PS> carina env mycluster --shell powershell | iex</span>
 <span class="fragment">$ docker ps</span>
 <span class="fragment">CONTAINER ID      IMAGE      COMMAND                  CREATED             STATUS
 ab668e03cafb      logjam     "tail -f /var/log/foo"   3 seconds ago       Up 3 seconds</span>
-            </code></pre>
-          </section>
+          </code></pre>
+        </section>
 
-          <section>
-            <h4>Grow Your Cluster</h4>
-            <pre><code class="bash" data-trim data-noescape>
+        <section>
+          <h3>Carina CLI Continued</h3>
+          <h4>Grow Your Cluster</h4>
+          <pre><code class="bash" data-trim data-noescape>
 $ carina ls
 <span class="fragment">ClusterName        Flavor             Segments           AutoScale          Status
 mycluster          container1-4G      1                  false              active</span>
@@ -835,8 +825,7 @@ mycluster          container1-4G      1                  false              grow
 $ carina ls</span>
 <span class="fragment">ClusterName        Flavor             Segments           AutoScale          Status
 mycluster          container1-4G      2                  false              active</span>
-            </code></pre>
-          </section>
+          </code></pre>
           <aside class="notes">
             Whiteboard the architecture so far.
           </aside>
@@ -858,7 +847,7 @@ $ docker port whoa2 8080</span>
 <span class="fragment">104.130.0.117:80</span>
 <span class="fragment">
 $ curl $(docker port whoa1)</span>
-<span class="fragment">🎉 Whoa! 🎉</span>
+<span class="fragment">� Whoa! �</span>
         </code></pre>
 
         <aside class="notes">
@@ -889,7 +878,6 @@ $ curl $(docker port whoa1)</span>
         <ul>
           <li><code>--publish</code> finds a node with the published port free</li>
           <li><code>--volumes-from</code> uses the same segment as the named container</li>
-          <li><code>--link</code> uses the same segment as the named container</li>
         </ul>
 
         <aside class="notes">
@@ -912,7 +900,7 @@ $ docker run --env affinity:container==backend ...
 $ docker run --env affinity:image==myapp ...</span>
 
 <span class="fragment"># Explicit node name
-$ docker run --env constraint:node==6dcd3c04-fab5-4367-ac39-d8b17c41c39c-n1 ...</span></span>
+$ docker run --env constraint:node==*-n1 ...</span></span>
 
 <span class="fragment"># Build a new image on the same node as an existing container
 $ docker build --build-arg affinity:image==myapp -t myapp:v2 .</span>
@@ -934,39 +922,28 @@ $ docker build --build-arg affinity:image==myapp -t myapp:v2 .</span>
           <li>Each segment has its own public IP, discoverable via <code>docker info</code></li>
         </ul>
 
-        <pre><code class="nohighlight fragment" data-trim data-noescape>
-$ docker info
-Containers: 9
-Images: 13
-Role: primary
-Strategy: spread
-Filters: health, port, dependency, affinity, constraint
-Nodes: 3
- 6dcd3c04-fab5-4367-ac39-d8b17c41c39c-n1: <mark>172.99.73.138</mark>:42376
-  └ Containers: 3
-  └ Reserved CPUs: 0 / 12
-  └ Reserved Memory: 0 B / 4.2 GiB
-  └ Labels: executiondriver=native-0.2, kernelversion=3.18.21-1-rackos, ...
-        </pre></code>
+        <img src="img/carina-topology.png"/>
 
         <aside class="notes">
+          Segment v. Node
           Carina segments are for resource control, not geographic redundancy.
         </aside>
       </section>
 
       <section>
         <h3>Carina Restrictions</h3>
-        <ul>
-          <li>Volumes only allowed within <code>/var/lib/docker</code></li>
-          <li>No <code>--privileged</code> containers or <code>--cap-add</code>/<code>--cap-drop</code></li>
-          <li>Limited device access</li>
-        </ul>
+        <p>tldr: You don't have access to the underlying Docker host</p>
 
-        <p class="fragment"><em>...but other than that, it's just Swarm</em></p>
+        <pre><code>--volume HOST:CONTAINER</code></pre>
+        <pre><code>--privileged</code></pre>
+        <pre><code>--cap-add/drop</code></pre>
+
+        <p><a href="https://getcarina.com/docs/troubleshooting/common-problems/">See Carina Troubleshooting for more</p>
 
         <aside class="notes">
-          Mostly these are related to security needs. Prefer using data volume containers to host
+          * Mostly these are related to security needs. Prefer using data volume containers to host
           volumes.
+          * Encourages good habits wrt volumes
         </aside>
       </section>
 
@@ -1037,7 +1014,7 @@ docker run -d --name my-nginx --volumes-from certs -p 443:443 my-nginx
 
         <section>
           <h2>Let's try it live!</h2>
-          <h3><a href="https://tmpnb.org">tmpnb.org</a></h3>
+          <h3><a href="https://tmpnb.org" target="blank">tmpnb.org</a></h3>
         </section>
 
 <!-- ********************************************************************** -->
