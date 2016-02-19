@@ -25,7 +25,7 @@ docker run --detach \
   -p 8081:8081 \
   --volumes-from swarm-data:ro \
   -e JUPYTERHUB_USERS=${JUPYTERHUB_USERS} \
-  -e JUPYTERHUB_ADMINS=${JUPYTERHUB_ADMINS} \
+  -e JUPYTERHUB_ADMINS=${JUPYTERHUB_USERS} \
   -e DOCKER_HOST=https://${DOCKER_HOST#tcp://} \
   -e HUB_IP_CONNECT=${DNSNAME} \
   -e OAUTH_CALLBACK_URL=http://${DNSNAME}/hub/oauth_callback \
@@ -33,3 +33,5 @@ docker run --detach \
   -e GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET} \
   -e "constraint:node==*n1" \
   jupyterhub-carina
+
+open http://$(docker port jupyterhub 8000)
