@@ -236,59 +236,114 @@
 
         <section>
           <h3>Docker Environment</h3>
-          <pre><code data-trim class="bash">
-alias de="env | grep DOCKER_"
+          <pre><code class="bash" data-trim data-noescape>
+$ alias de="env | grep DOCKER_"
 
-cd Downloads/mycluster
-more README.md
-source docker.env
-de
-dvm use
+<span class="fragment">$ cd Downloads/mycluster</span>
+
+<span class="fragment">$ cat README.md</span>
+<span class="fragment">Using Your Swarm Cluster
+========================
+
+This directory contains all of the files the Docker CLI will need to
+communicate with your Swarm Cluster...</span>
+
+<span class="fragment">$ source docker.env</span>
+
+<span class="fragment">$ de</span>
+<span class="fragment">DOCKER_HOST=tcp://146.20.68.14:2376
+DOCKER_TLS_VERIFY=1
+DOCKER_CERT_PATH=/Users/everett/Downloads/mycluster
+DOCKER_VERSION=1.10.1</span>
+
+<span class="fragment">$ dvm use</span>
+<span class="fragment">Now using Docker 1.10.1</span>
           </code></pre>
         </section>
 
         <section>
           <h3>Containers</h3>
-          <pre><code data-trim class="bash">
-docker
-docker version
-docker ps
-docker run --interactive --tty alpine:3.3 /bin/sh
+          <pre><code class="bash" data-trim data-noescape>
+$ docker
+<span class="fragment">Usage: docker [OPTIONS] COMMAND [arg...]
+       docker [ --help | -v | --version ]
+
+A self-sufficient runtime for containers...</span>
+
+<span class="fragment">$ docker ps</span>
+<span class="fragment">CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
+2c226fad0713        carina/consul       "/bin/consul agent -b"   2 days ago          Up 2 days                               96afcb76-6483-443e-941d-df9f803a4628-n2/carina-svcd
+c715e66154c8        carina/consul       "/bin/consul agent -b"   3 days ago          Up 3 days                               96afcb76-6483-443e-941d-df9f803a4628-n1/carina-svcd</span>
+
+<span class="fragment">$ docker run --interactive --tty alpine:3.3 /bin/sh</span>
+<span class="fragment">/ #</span>
           </code></pre>
         </section>
 
         <section>
           <h3>Containers</h3>
-          <pre><code data-trim class="bash">
-uname -a
-ps
-exit
+          <pre><code class="bash" data-trim data-noescape>
+# uname -a
+<span class="fragment">Linux d020582f8e97 3.18.21-1-rackos #1 SMP Tue Oct 6 18:37:31 UTC 2015 x86_64 Linux</span>
+
+<span class="fragment"># ps</span>
+<span class="fragment">PID   USER     TIME   COMMAND
+    1 root       0:00 /bin/sh
+   17 root       0:00 ps</span>
+
+<span class="fragment"># exit</span>
           </code></pre>
         </section>
 
         <section>
           <h3>Containers</h3>
-          <pre><code data-trim class="bash">
-docker ps
-docker ps --latest
-docker ps --latest --quiet
-docker start $(docker ps -l -q)
-docker ps
-docker attach $(docker ps -l -q)
-# Press enter if you just get a blank line
-exit
-docker rm $(docker ps -l -q)
+          <pre><code class="bash" data-trim data-noescape>
+<span class="fragment">$ docker ps --latest</span>
+<span class="fragment">CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                     PORTS               NAMES
+d020582f8e97        alpine:3.3          "/bin/sh"           5 minutes ago       Exited (0) 1 seconds ago                       96afcb76-6483-443e-941d-df9f803a4628-n2/pedantic_yalow</span>
+
+<span class="fragment">$ docker ps --latest --quiet</span>
+<span class="fragment">d020582f8e97</span>
+
+<span class="fragment">$ docker start $(docker ps -l -q)</span>
+<span class="fragment">d020582f8e97</span>
+
+<span class="fragment">$ docker ps -l</span>
+<span class="fragment">CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
+d020582f8e97        alpine:3.3          "/bin/sh"                6 minutes ago       Up 10 seconds                           96afcb76-6483-443e-941d-df9f803a4628-n2/pedantic_yalow</span>
+
+<span class="fragment">$ docker attach $(docker ps -l -q)
+(Press enter if you just get a blank line)</span>
+
+<span class="fragment"># exit</span>
+
+<span class="fragment">$ docker rm $(docker ps -l -q)</span>
+<span class="fragment">d020582f8e97</span>
           </code></pre>
         </section>
 
         <section>
           <h3>Containers</h3>
-          <pre><code data-trim class="bash">
-docker run --detach --name ghost --publish 8080:2368 ghost:0.7
-docker logs ghost
-open http://$(docker port ghost 2368/tcp)
-docker ps
-docker rm --force ghost
+          <pre><code class="bash" data-trim data-noescape>
+$ docker run --detach --name ghost --publish 8080:2368 ghost:0.7
+<span class="fragment">fbe7b7f520e8ba08925f4a2df1cd7d66bbacd25164656e25fca34e24127e7c73</span>
+
+<span class="fragment">$ docker logs ghost</span>
+<span class="fragment">...
+Migrations: Complete
+Ghost is running in development...
+Listening on 0.0.0.0:2368
+Url configured as: http://localhost:2368
+Ctrl+C to shut down</span>
+
+<span class="fragment">$ docker ps -l</span>
+<span class="fragment">CONTAINER ID        IMAGE               COMMAND                  CREATED              STATUS              PORTS                          NAMES
+fbe7b7f520e8        ghost:0.7           "/entrypoint.sh npm s"   About a minute ago   Up About a minute   172.99.77.191:8080->2368/tcp   96afcb76-6483-443e-941d-df9f803a4628-n2/ghost</span>
+
+<span class="fragment">$ open http://$(docker port ghost 2368/tcp)</span>
+
+<span class="fragment">$ docker rm --force ghost</span>
+<span class="fragment">ghost</span>
           </code></pre>
         </section>
 
@@ -302,11 +357,12 @@ docker rm --force ghost
             <li>Stop the container and remove it</li>
           </ol>
           <aside class="notes">
-            <pre><code data-trim class="bash">
+            <pre><code class="bash" data-trim data-noescape>
 docker run --detach --name nginx --publish 80:80 nginx:1.9
+chmod r+x README.md
 docker cp README.md nginx:/usr/share/nginx/html/index.html
 open http://$(docker port nginx 80/tcp)
-docker rm --force $(docker ps -l -q)
+docker rm --force nginx
             </code></pre>
           </aside>
         </section>
@@ -333,9 +389,18 @@ docker rm --force $(docker ps -l -q)
 
         <section>
           <h3>Images</h3>
-          <pre><code data-trim class="bash">
-docker images
-docker pull alpine:3.3
+          <pre><code class="bash" data-trim data-noescape>
+$ docker images
+<span class="fragment">REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+alpine              3.3                 90239124c352        31 hours ago        4.794 MB
+cirros              latest              f8ce316a37a7        6 weeks ago         7.735 MB
+nginx               1.9                 69203b7cd029        7 days ago          134.6 MB
+swarm               1.1.0               4b5b33ba4e4f        2 weeks ago         18.11 MB
+ghost               0.7                 c39498b8f953        2 weeks ago         352.2 MB
+carina/consul       latest              2a49945a93ab        2 weeks ago         28.49 MB</span>
+
+<span class="fragment">$ docker pull alpine:3.3</span>
+<span class="fragment">96afcb76-6483-443e-941d-df9f803a4628-n1: Pulling alpine:3.3... : downloaded</span>
           </code></pre>
         </section>
 
@@ -350,19 +415,23 @@ docker pull alpine:3.3
 
         <section>
           <h3>Images</h3>
-          <pre><code data-trim class="bash">
-mkdir workshop
-cd workshop
-touch Dockerfile
-touch entrypoint.sh
-chmod u+x entrypoint.sh
+          <pre><code class="bash" data-trim data-noescape>
+$ mkdir workshop
+
+<span class="fragment">$ cd workshop</span>
+
+<span class="fragment">$ touch Dockerfile</span>
+
+<span class="fragment">$ touch entrypoint.sh</span>
+
+<span class="fragment">$ chmod u+x entrypoint.sh</span>
           </code></pre>
         </section>
 
         <section>
           <h3>Dockerfile</h3>
           <p>Edit <code>Dockerfile</code></p>
-          <pre><code data-trim class="bash">
+          <pre><code class="bash" data-trim>
 FROM alpine:3.3
 MAINTAINER Firstname Lastname "firstname.lastname@example.com"
 
@@ -387,8 +456,8 @@ CMD ["Default CMD Message"]
         <section>
           <h3>Entrypoint Script</h3>
           <p>Edit <code>entrypoint.sh</code></p>
-          <pre><code data-trim class="bash">
-#!/bin/bash
+          <pre><code class="bash" data-trim>
+#!/bin/sh
 
 set -euo pipefail
 
@@ -401,17 +470,36 @@ exec nginx -g "daemon off;"
 
         <section>
           <h3>Images</h3>
-          <pre><code data-trim class="bash">
-docker build --build-arg BUILD_TIME_VAR="Chop Wood," --tag="nginx-message:1.0" .
-docker images
-docker run --detach \
+          <pre><code class="bash" data-trim data-noescape>
+$ docker build --build-arg BUILD_TIME_VAR="Chop Wood," --tag="nginx-message:1.0" .
+<span class="fragment">Sending build context to Docker daemon 3.072 kB
+Step 1 : FROM alpine:3.3
+ ---> 90239124c352
+...
+Successfully built 3f7493082af2</span>
+
+<span class="fragment">$ docker images</span>
+<span class="fragment">REPOSITORY          TAG                 IMAGE ID            CREATED              SIZE
+nginx-message       1.0                 3f7493082af2        About a minute ago   6.249 MB
+...</span>
+          </code></pre>
+        </section>
+
+        <section>
+          <h3>Images</h3>
+          <pre><code class="bash" data-trim data-noescape>
+$ docker run --detach \
   --name nginx \
   --publish 80:80 \
   --env RUN_TIME_VAR="Carry Water," \
   nginx-message:1.0 \
   "Mow Lawn"
-open http://$(docker port nginx 80/tcp)
-docker rm --force nginx
+<span class="fragment">3f98a5832b79fe43f97aa07aaa9e425fa33cb7e195e61a6b0d39dfdd4dc0195e</span>
+
+<span class="fragment">$ open http://$(docker port nginx 80/tcp)</span>
+
+<span class="fragment">$ docker rm --force nginx</span>
+<span class="fragment">nginx</span>
           </code></pre>
         </section>
 
@@ -437,33 +525,55 @@ docker rm --force nginx
 
         <section>
           <h3>Volumes</h3>
-          <pre><code data-trim class="bash">
-docker create --name data --volume /var/lib/mysql cirros /bin/true
-docker ps -l
-docker run --detach \
+          <pre><code class="bash" data-trim data-noescape>
+$ docker create --name data --volume /var/lib/mysql cirros /bin/true
+<span class="fragment">162bf49dbc24245a53095b5be611da3e820862dc8e837a66dab83d7e3f9d5b5a</span>
+
+<span class="fragment">$ docker ps -l
+<span class="fragment">CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+162bf49dbc24        cirros              "/bin/true"         12 seconds ago                                              96afcb76-6483-443e-941d-df9f803a4628-n2/data</span>
+
+<span class="fragment">$ docker run --detach \
   --name mysql \
   --volumes-from data \
-  --env MYSQL_ROOT_PASSWORD=my-root-pw \
-  --env MYSQL_DATABASE=test \
-  --env MYSQL_USER=test-user \
-  --env MYSQL_PASSWORD=test-password \
-  mysql:5.6
-docker run --rm \
+  --env MYSQL_ROOT_PASSWORD=my-root-pw --env MYSQL_DATABASE=test --env MYSQL_USER=test-user --env MYSQL_PASSWORD=test-password \
+  mysql:5.6</span>
+<span class="fragment">6c38ad9739c47933e0a415912fbec83190bc519650dcb1412091d207f09a040d</span>
+
+<span class="fragment">$ docker run --rm \
   --volumes-from data \
   cirros \
-  ls /var/lib/mysql
+  ls /var/lib/mysql</span>
+<span class="fragment">auto.cnf
+ib_logfile0
+ib_logfile1
+ibdata1
+mysql
+performance_schema
+test</span>
           </code></pre>
         </section>
 
         <section>
           <h3>Volumes</h3>
-          <pre><code data-trim class="bash">
-docker rm -f mysql
-docker run --rm \
+          <pre><code class="bash" data-trim data-noescape>
+$ docker rm -f mysql
+<span class="fragment">mysql</span>
+
+<span class="fragment">$ docker run --rm \
   --volumes-from data \
   cirros \
-  ls /var/lib/mysql
-docker rm --volumes data
+  ls /var/lib/mysql</span>
+<span class="fragment">auto.cnf
+ib_logfile0
+ib_logfile1
+ibdata1
+mysql
+performance_schema
+test</span>
+
+<span class="fragment">$ docker rm --volumes data</span>
+<span class="fragment">data</span>
           </code></pre>
         </section>
 
@@ -472,7 +582,10 @@ docker rm --volumes data
           <ul>
             <li><a href="https://getcarina.com/docs/tutorials/data-volume-containers/" target="_blank">Use data volume containers</a> (Carina)</li>
             <li><a href="https://docs.docker.com/engine/userguide/containers/dockervolumes/" target="_blank">Manage data in containers</a></li>
-            <li>Why didn't we use <code>docker volume</code>? See <a href="https://github.com/docker/swarm/issues/1529" target="_blank">The utility of creating a volume per node</a></li>
+            <li>Why didn't we use <code>docker volume</code>?</li>
+            <ul>
+              <li>See <a href="https://github.com/docker/swarm/issues/1529" target="_blank">The utility of creating a volume per node</a></li>
+            </ul>
           </ul>
         </section>
 
@@ -488,22 +601,34 @@ docker rm --volumes data
 
         <section>
           <h3>Networks</h3>
-          <pre><code data-trim class="bash">
-docker network create mynet
-docker network ls
-docker run \
+          <pre><code class="bash" data-trim data-noescape>
+$ docker network create mynet
+<span class="fragment">0b1194e03c4747be069eef05b6db67c13974d9717ebd859fcff7aa322aa48d9b</span>
+
+<span class="fragment">$ docker network ls</span>
+<span class="fragment">NETWORK ID          NAME                                                      DRIVER
+0b1194e03c47        mynet                                                     overlay
+33a440068243        96afcb76-6483-443e-941d-df9f803a4628-n1/none              null
+3b126dcfc9ea        96afcb76-6483-443e-941d-df9f803a4628-n1/bridge            bridge
+60cecf066b00        96afcb76-6483-443e-941d-df9f803a4628-n1/host              host
+c3a94fdde28f        96afcb76-6483-443e-941d-df9f803a4628-n1/docker_gwbridge   bridge</span>
+
+<span class="fragment">$ docker run \
   --detach \
   --name mysql \
   --net mynet \
   --env MYSQL_ROOT_PASSWORD=my-root-pw \
-  mysql:5.6
-docker port mysql 3306
+  mysql:5.6</span>
+<span class="fragment">60d49ac074902a721d6a90af5c4bd85363bed0a998fd4b19da61198f5340b73d</span>
+
+<span class="fragment">$ docker port mysql 3306</span>
+<span class="fragment">Error: No public port '3306/tcp' published for mysql</span>
           </code></pre>
         </section>
 
         <section>
           <h3>Networks</h3>
-          <pre><code data-trim class="bash">
+          <pre><code class="bash" data-trim data-noescape>
 docker run --detach \
   --name wordpress \
   --net mynet \
@@ -511,15 +636,23 @@ docker run --detach \
   --env WORDPRESS_DB_HOST=mysql \
   --env WORDPRESS_DB_PASSWORD=my-root-pw \
   wordpress:4.4
-docker port wordpress 80
-docker rm -f mysql wordpress
+<span class="fragment">c7ebba7f81c1cf48bddbea6d3080713bea58b9de38ee7e7d422b0010b33daf12</span>
+
+<span class="fragment">$ open http://$(docker port wordpress 80/tcp)</span>
+
+<span class="fragment">$ docker rm -f mysql wordpress</span>
+<span class="fragment">mysql
+wordpress</span>
           </code></pre>
         </section>
 
         <section>
           <h3>Networks</h3>
-          <pre><code data-trim class="bash">
-docker ps
+          <pre><code class="bash" data-trim data-noescape>
+<span class="fragment">$ docker ps
+<span class="fragment">CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
+2c226fad0713        carina/consul       "/bin/consul agent -b"   2 days ago          Up 2 days                               96afcb76-6483-443e-941d-df9f803a4628-n2/carina-svcd
+c715e66154c8        carina/consul       "/bin/consul agent -b"   3 days ago          Up 3 days                               96afcb76-6483-443e-941d-df9f803a4628-n1/carina-svcd
           </code></pre>
         </section>
 
@@ -785,7 +918,7 @@ Nodes: 3
           <li><em>Hint:</em> <code>docker ps</code> will show which segment each container is on</li>
         </ul>
         <aside class="notes">
-          <pre><code data-trim class="bash">
+          <pre><code class="bash" data-trim data-noescape>
 docker run -d --name backend rackerlabs/whoa
 docker create --name certs -v /certificates -e affinity:container==whoa busybox
 docker cp ./private-key.pem certs:/certificates/private-key.pem
@@ -860,7 +993,7 @@ docker run -d --name my-nginx --volumes-from certs -p 443:443 my-nginx
 
         <section>
           <h3>Create a new cluster</h3>
-          <pre><code data-trim class="bash">
+          <pre><code class="bash" data-trim data-noescape>
 carina create jupyterhub --wait
           </code></pre>
         </section>
@@ -868,14 +1001,14 @@ carina create jupyterhub --wait
 <!-- That's one long repo name for the board -->
         <section>
           <h3>Clone this repo</h3>
-          <pre><code data-trim class="bash">
+          <pre><code class="bash" data-trim data-noescape>
 git clone https://github.com/everett-toews/jupyterhub-on-docker-swarm
           </code></pre>
         </section>
 
         <section>
           <h3>Launch</h3>
-          <pre><code data-trim class="bash">
+          <pre><code class="bash" data-trim data-noescape>
 cd jupyterhub-on-docker-swarm # if you're not already there
 cd jupyterhub-launch
 carina env jupyterhub
