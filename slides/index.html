@@ -1057,17 +1057,73 @@ carina create jupyterhub --wait
           <pre><code class="bash" data-trim data-noescape>
 git clone https://github.com/everett-toews/jupyterhub-on-docker-swarm
           </code></pre>
+
+          <p>If you don't have git, <a href="https://github.com/everett-toews/jupyterhub-on-docker-swarm/archive/gh-pages.zip" target="blank">download the repository</a>.</p>
+        </section>
+
+        <section>
+          <h3>Configure GitHub OAuth</h3>
+
+          <p>Get your segment IP address</p>
+          <pre><code class="bash" data-trim data-noescape>
+$ eval $(carina env jupyterhub)
+PS> carina env jupyterhub | iex
+
+$ echo "Segment IP: $(docker run --rm --net=host racknet/ip public ipv4)"
+Segment IP: 146.20.68.51
+          </code></pre>
+        </section>
+
+        <section>
+          <h3>Configure GitHub OAuth Cont.</h3>
+
+          <p><a href="https://github.com/settings/applications/new" target="blank">Create a new developer application on GitHub</a></p>
+          <img src="img/github-oauth-app.png" />
+        </section>
+
+        <section>
+          <h3>Configure GitHub OAuth Cont.</h3>
+
+          <p>Copy your secrets</p>
+          <img src="img/github-oauth-secret.png" />
+
+          <p style="font-size: .7em; font-style: italic">Yes, I reset my secret after this screenshot...</p>
         </section>
 
         <section>
           <h3>Launch</h3>
-          <pre><code class="bash" data-trim data-noescape>
-cd jupyterhub-on-docker-swarm # if you're not already there
-cd jupyterhub-launch
-carina env jupyterhub
-# TODO: Environment variables, OAauth, Domain
-./launch.sh
+
+          <pre><code class="bash" data-trim>
+# Change to the jupyterhub-on-docker-swarm /jupyterhub-launch directory
+
+$ eval $(carina env jupyterhub)
+$ DNSNAME=$(docker run --rm --net=host racknet/ip public ipv4) \
+  JUPYTERHUB_USERS=&lt;github-user&gt; \
+  GITHUB_CLIENT_ID=&lt;github-client-id&gt; \
+  GITHUB_CLIENT_SECRET=&lt;github-client-secret&gt; \
+  ./launch.sh
+
+PS> carina env jupyterhub --shell powershell | iex
+PS> $env:DNSNAME=$(docker run --rm --net=host racknet/ip public ipv4); `
+  $env:JUPYTERHUB_USERS="&lt;github-user&gt;"; `
+  $env:GITHUB_CLIENT_ID="&lt;github-client-id&gt;"; `
+  $env:GITHUB_CLIENT_SECRET="&lt;github-client-secret&gt;"; `
+  .\launch.ps1
           </code></pre>
+
+          <p>Your web browser should automatically open to display JupyterHub.</p>
+        </section>
+
+        <section>
+          <h3>Start your Jupyter Notebook</h3>
+
+          <ol>
+            <li>Sign in with GitHub.</li>
+            <li>Start your Jupyter server.</li>
+            <li>Copy a notebook to your server</li>
+            <pre style="width: 45em;"><code>docker cp welcome-to-python.ipynb jupyter-&lt;github-user&gt;:/home/jovyan/work</pre></code>
+            <li>Open the Welcome to Python notebook.</li>
+          </ol>
         </section>
 
         <section>
