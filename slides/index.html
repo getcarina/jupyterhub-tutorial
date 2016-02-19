@@ -672,15 +672,30 @@ c715e66154c8        carina/consul       "/bin/consul agent -b"   3 days ago     
         <section id="docker-swarm-carina">
           <h1 style="color:DeepSkyBlue">Docker Swarm and Carina</h1>
           <img src="img/docker-swarm.png"/>
+
+          <aside class="notes">
+            <ul>
+              <li>So what is Carina? Docker as a Service</li>
+              <li>Today vs Future (mesos, kubernetes)</li>
+            </ul>
+          </aside>
         </section>
 
         <section>
           <h2>Docker Swarm</h2>
           <ul>
             <li>Many Docker Hosts, one API endpoint</li>
-            <li>New primitives (e.g. affinities)</li>
+            <li>Introduces new concepts, like affinities</li>
             <li>Scheduling according to resource constraints</li>
           </ul>
+
+          <aside class="notes">
+            <ul>
+              <li>Treat cluster of dockers as 1 docker</li>
+              <li>Same docker commands</li>
+              <li>Scheduling = pick which host on which to run commands</li>
+            </ul>
+          </aside>
         </section>
 
         <section>
@@ -688,10 +703,10 @@ c715e66154c8        carina/consul       "/bin/consul agent -b"   3 days ago     
 
           <aside class="notes">
             <ul>
-              <li>Carina uses Docker Swarm</li>
               <li>Handles the setup and managment</li>
-              <li>Segments / Nodes</li>
+              <li>SEGMENTS! SEGMENTS! SEGMENTS!</li>
               <li>This is how we scale</li>
+              <li>Walkthrough flow of commands</li>
             </ul>
           </aside>
         </section>
@@ -706,7 +721,7 @@ c715e66154c8        carina/consul       "/bin/consul agent -b"   3 days ago     
               <pre><code class="bash" data-trim data-noescape>
 $ carina ls
 <span class="fragment">ClusterName       Flavor           Segments           AutoScale          Status
-mycluster         container1-4G    1                  false              activeM</span>
+mycluster         container1-4G    1                  false              active</span>
               </code></pre>
             </div>
 
@@ -720,14 +735,44 @@ foobar          container1-4G   1                false            active</span>
             </div>
 
             <div class="fragment">
-              <h4>Load the Docker environment for your Cluster</h4>
+              <h4>Rebuild a Cluster</h4>
               <pre><code class="bash" data-trim data-noescape>
-$ eval $(carina env mycluster)
+$ carina rebuild foobar
+<span class="fragment">ClusterName     Flavor          Segments         AutoScale        Status
+foobar          container1-4G   1                false            rebuilding-swarm</span>
+              </code></pre>
+            </div>
+
+            <aside class="notes">
+              <ul>
+                <li>Websites are cool but command-line tools are cooler.
+                    Everything you can do with the site, you can do through the cli</li>
+                <li>Behind the scenes carina is downloading your credentials zip</li>
+                <li>Nice shorthand for the source docker.env command used earlier</li>
+              </ul>
+            </aside>
+          </section>
+
+          <section>
+            <h4>Load the Docker environment for your Cluster</h4>
+            <pre><code class="bash" data-trim data-noescape>
+$ carina env mycluster
+<span class="fragment">source /Users/caro8994/.carina/clusters/carolynvsrax/mycluster/docker.env
+# Run the command below to get your Docker environment variables set:
+# eval $(carina env mycluster)</span>
+
+<span class="fragment">PS> carina env mycluster --shell powershell
+. C:\Users\caro8994\carina\clusters\carolynvsrax\mycluster\docker.ps1
+# Run the command below to get your Docker environment variables set:
+# carina env mycluster --shell powershell | iex</span>
+
+<span class="fragment">$ eval $(carina env mycluster)
+PS> carina env mycluster --shell powershell | iex</span>
+
 <span class="fragment">$ docker ps</span>
 <span class="fragment">CONTAINER ID      IMAGE      COMMAND                  CREATED             STATUS
 ab668e03cafb      logjam     "tail -f /var/log/foo"   3 seconds ago       Up 3 seconds</span>
-              </code></pre>
-            </div>
+            </code></pre>
           </section>
 
           <section>
@@ -746,15 +791,6 @@ $ carina ls</span>
 mycluster          container1-4G      2                  false              active</span>
             </code></pre>
           </section>
-
-          <aside class="notes">
-            <ul>
-              <li>Websites are cool but command-line tools are cooler.
-                  Everything you can do with the site, you can do through the cli</li>
-              <li>Behind the scenes carina is downloading your credentials zip</li>
-              <li>Nice shorthand for the source docker.env command used earlier</li>
-            </ul>
-          </aside>
         </section>
 
       <section>
