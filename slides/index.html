@@ -259,6 +259,9 @@ DOCKER_VERSION=1.10.1</span>
 <span class="fragment">$ dvm use</span>
 <span class="fragment">Now using Docker 1.10.1</span>
           </code></pre>
+          <aside class="notes">
+            Whiteboard the architecture so far.
+          </aside>
         </section>
 
         <section>
@@ -384,6 +387,7 @@ docker rm --force nginx
             <li>Layered filesystems</li>
             <li>Top layer is rw and the layers below are ro</li>
             <li>There's an analogy to Git but we won't be using <code>docker commit</code></li>
+            <li>By default, images are coming from Docker Hub</li>
           </ul>
         </section>
 
@@ -649,11 +653,17 @@ wordpress</span>
         <section>
           <h3>Networks</h3>
           <pre><code class="bash" data-trim data-noescape>
-<span class="fragment">$ docker ps
+$ docker ps
 <span class="fragment">CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
 2c226fad0713        carina/consul       "/bin/consul agent -b"   2 days ago          Up 2 days                               96afcb76-6483-443e-941d-df9f803a4628-n2/carina-svcd
-c715e66154c8        carina/consul       "/bin/consul agent -b"   3 days ago          Up 3 days                               96afcb76-6483-443e-941d-df9f803a4628-n1/carina-svcd
+c715e66154c8        carina/consul       "/bin/consul agent -b"   3 days ago          Up 3 days                               96afcb76-6483-443e-941d-df9f803a4628-n1/carina-svcd</span>
+
+<span class="fragment">$ #docker rm container-name-1 container-name-2</span>
+<span class="fragment">$ #docker rm $(docker ps -qf "status=exited")</span>
           </code></pre>
+          <aside>
+            Take care to delete by explicit name or status
+          </aside>
         </section>
 
         <section>
@@ -692,7 +702,7 @@ c715e66154c8        carina/consul       "/bin/consul agent -b"   3 days ago     
             With some limitations
           </aside>
         </section>
-        
+
         <section>
           <h2>Docker Swarm</h2>
           <ul>
