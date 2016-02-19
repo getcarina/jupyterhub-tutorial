@@ -46,7 +46,8 @@
           <h4>Deploy an interactive data science environment</h4>
           <h5>with JupyterHub on Docker Swarm</h5>
           <img src="img/docker-swarm.png"/>
-          <h4><a href="http://rack.to/jupyterhub-on-docker-swarm">rack.to/jupyterhub-on-docker-swarm</a></h4>
+          <h4>Open <a href="http://rack.to/jup">rack.to/jup</a></h4>
+          <h5>Go to <a href="#setup">Setup</a> and get started</h5>
           <p style="font-size: 50%;">Use the arrow keys to navigate</p>
         </section>
 
@@ -78,10 +79,13 @@
 
         <section id="goals">
           <h3>Goals</h3>
-          <p>Learn Docker basics and Docker Swarm fundamentals. To exercise these fundamentals the participants will deploy JupyterHub on <a href="https://getcarina.com/" target="_blank">Carina</a>, a hosted Docker Swarm environment. Along the way they'll also gain a better understanding of Jupyter, an open source web application that allows you to create and share documents that contain live code, equations, visualizations, and explanatory text.</p>
+          <ul>
+            <li>Learn Docker basics and Docker Swarm fundamentals</li>
+            <li>Exercise these fundamentals by deploying JupyterHub on <a href="https://getcarina.com/" target="_blank">Carina</a>, a hosted Docker Swarm environment</li>
+          </ul>
           <aside class="notes">
             <ul>
-              <li>The Docker basics will essentially be the minimum knowledge of Docker you need to complete the workshop.</li>
+              <li>The Docker basics will essentially be the minimum knowledge of Docker you need to complete the workshop</li>
               <li>File issues or send PRs!</li>
               <li>Pair up</li>
             </ul>
@@ -147,7 +151,7 @@
             <li><a href="https://getcarina.com/" target="_blank">Carina</a></li>
             <li>Documentation</li>
               <ul>
-                <li>Note: Edit on GitHub</li>
+                <li>Note the Edit on GitHub links on every page</li>
               </ul>
             <li>Community</li>
               <ul>
@@ -164,6 +168,7 @@
           <h3>Add a Cluster</h3>
           <p>Setup a cluster where we can run Docker containers</p>
           <ul>
+            <li><a href="https://app.getcarina.com/" target="_blank">Log In</a></li>
             <li>Add Cluster</li>
               <ul>
                 <li>Cluster Name: mycluster</li>
@@ -209,7 +214,8 @@
             <li>Process isolation</li>
             <li>Reproducible environments</li>
             <li>Composable</li>
-            <li>Cloud agnostic</li>
+            <li>Multi-Cloud</li>
+            <li>Ecourages 🐮🐮🐮</li>
           </ul>
         </section>
 
@@ -281,6 +287,9 @@ c715e66154c8        carina/consul       "/bin/consul agent -b"   3 days ago     
 <span class="fragment">$ docker run --interactive --tty alpine:3.3 /bin/sh</span>
 <span class="fragment">/ #</span>
           </code></pre>
+          <aside class="notes">
+            Ignore the Consul containers for now. We'll discuss them at the end of Networks.
+          </aside>
         </section>
 
         <section>
@@ -323,6 +332,13 @@ d020582f8e97        alpine:3.3          "/bin/sh"                6 minutes ago  
 <span class="fragment">$ docker rm $(docker ps -l -q)</span>
 <span class="fragment">d020582f8e97</span>
           </code></pre>
+          <aside class="notes">
+            <ul>
+              <li>It can be a bit of a pain working with unnamed containers so we'll name them from here on out</li>
+              <li>Notice how we're not using SSH</li>
+              <li>You can also use docker exec to enter a container</li>
+            </ul>
+          </aside>
         </section>
 
         <section>
@@ -348,6 +364,9 @@ fbe7b7f520e8        ghost:0.7           "/entrypoint.sh npm s"   About a minute 
 <span class="fragment">$ docker rm --force ghost</span>
 <span class="fragment">ghost</span>
           </code></pre>
+          <aside class="notes">
+            Note publishing the port.
+          </aside>
         </section>
 
         <section>
@@ -406,6 +425,9 @@ carina/consul       latest              2a49945a93ab        2 weeks ago         
 <span class="fragment">$ docker pull alpine:3.3</span>
 <span class="fragment">96afcb76-6483-443e-941d-df9f803a4628-n1: Pulling alpine:3.3... : downloaded</span>
           </code></pre>
+          <aside class="notes">
+            Note the sizes.
+          </aside>
         </section>
 
         <section>
@@ -658,10 +680,11 @@ $ docker ps
 2c226fad0713        carina/consul       "/bin/consul agent -b"   2 days ago          Up 2 days                               96afcb76-6483-443e-941d-df9f803a4628-n2/carina-svcd
 c715e66154c8        carina/consul       "/bin/consul agent -b"   3 days ago          Up 3 days                               96afcb76-6483-443e-941d-df9f803a4628-n1/carina-svcd</span>
 
-<span class="fragment">$ #docker rm container-name-1 container-name-2</span>
-<span class="fragment">$ #docker rm $(docker ps -qf "status=exited")</span>
+<span class="fragment"># No need to run the following commands</span>
+<span class="fragment">$ docker rm container-name-1 container-name-2</span>
+<span class="fragment">$ docker rm $(docker ps -qf "status=exited")</span>
           </code></pre>
-          <aside>
+          <aside class="notes">
             Take care to delete by explicit name or status
           </aside>
         </section>
@@ -716,6 +739,7 @@ c715e66154c8        carina/consul       "/bin/consul agent -b"   3 days ago     
               <li>Treat cluster of dockers as 1 docker</li>
               <li>Same docker commands</li>
               <li>Scheduling = pick which host on which to run commands</li>
+              <li>Whiteboard the architecture so far</li>
             </ul>
           </aside>
         </section>
@@ -813,6 +837,9 @@ $ carina ls</span>
 mycluster          container1-4G      2                  false              active</span>
             </code></pre>
           </section>
+          <aside class="notes">
+            Whiteboard the architecture so far.
+          </aside>
         </section>
 
       <section>
@@ -1021,11 +1048,14 @@ docker run -d --name my-nginx --volumes-from certs -p 443:443 my-nginx
 
         <section>
           <h2>JupyterHub Architecture</h2>
-            <ul>
-              <li>Notebook servers for users</li>
-              <li>Configurable HTTP Proxy</li>
-              <li>Bring your own auth</li>
-            </ul>
+          <ul>
+            <li>Notebook servers for users</li>
+            <li>Configurable HTTP Proxy</li>
+            <li>Bring your own auth</li>
+          </ul>
+          <aside class="notes">
+            Whiteboard the architecture so far.
+          </aside>
         </section>
 
         <section>
@@ -1061,6 +1091,15 @@ carina env jupyterhub
 # TODO: Environment variables, OAauth, Domain
 ./launch.sh
           </code></pre>
+        </section>
+
+        <section>
+          <h3>Review</h3>
+          <ul>
+            <li><a href="https://github.com/everett-toews/jupyterhub-on-docker-swarm/blob/gh-pages/jupyterhub-launch/launch.sh" target="_blank">launch.sh</a></li>
+            <li><a href="https://github.com/everett-toews/jupyterhub-on-docker-swarm/blob/gh-pages/jupyterhub-launch/Dockerfile" target="_blank">Dockerfile</a></li>
+            <li><a href="https://github.com/jupyter/jupyterhub/blob/master/Dockerfile" target="_blank">Parent Dockerfile</a></li>
+          </ul>
         </section>
 
 
