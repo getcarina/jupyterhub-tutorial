@@ -370,7 +370,7 @@ fbe7b7f520e8        ghost:0.7           "/entrypoint.sh npm s"   About a minute 
         </section>
 
         <section>
-          <h3>Lab</h3>
+          <h3>Lab #1</h3>
           <ol>
             <li>Run an <code>nginx:1.9</code> container in detached mode</li>
             <li>Bind the container port 80 to the host port 80</li>
@@ -378,6 +378,8 @@ fbe7b7f520e8        ghost:0.7           "/entrypoint.sh npm s"   About a minute 
             <li>Bonus Points: Replace the default nginx landing page using <code>docker cp</code> and a file from your laptop</li>
             <li>Stop the container and remove it</li>
           </ol>
+
+          <p><a href="https://github.com/everett-toews/jupyterhub-on-docker-swarm/blob/gh-pages/resources/lab-1-solution.md" target="_blank">Top Secret Answer</a></p>
           <aside class="notes">
             <pre><code class="bash" data-trim data-noescape>
 docker run --detach --name nginx --publish 80:80 nginx:1.9
@@ -861,13 +863,15 @@ $ curl $(docker port whoa1)</span>
       </section>
 
       <section>
-          <h3>LAB</h3>
+          <h3>Lab #2</h3>
           <ol>
             <li>Create a new cluster</li>
-            <li>Load the Docker environment for the new cluster</li>
             <li>Grow the cluster to 3 segments</li>
+            <li>Load the Docker environment for the new cluster</li>
             <li>Run 3 instances of `rackerlabs/whoa` on port 80</li>
           </ol>
+
+          <p><a href="https://github.com/everett-toews/jupyterhub-on-docker-swarm/blob/gh-pages/resources/lab-2-solution.md" target="_blank">Top Secret Answer</a></p>
       </section>
 
       <section>
@@ -966,10 +970,11 @@ Nodes: 3
       </section>
 
       <section>
-        <h3>Lab</h3>
+        <h3>Lab #3</h3>
         <ol>
           <li>Run a <code>rackerlabs/whoa</code> container</li>
           <li>Create a data volume container (DVC) on the same segment</li>
+          <li><a href="https://github.com/everett-toews/jupyterhub-on-docker-swarm/blob/gh-pages/resources/selfsigned.sh" target="_blank">Generate a self-signed certificate</a></li>
           <li>Use <code>docker cp</code> to upload a self-signed TLS certificate to the DVC</li>
           <li>
             Run an <code>nginx:1.9</code> container that:
@@ -982,9 +987,12 @@ Nodes: 3
         </ol>
         <hr>
         <ul>
-          <li><em>Resources:</em> <a href="https://github.com/everett-toews/jupyterhub-on-docker-swarm/blob/gh-pages/resources/selfsigned.sh"><code>openssl</code>-fu</a> | <a href="https://github.com/everett-toews/jupyterhub-on-docker-swarm/blob/gh-pages/resources/nginx.conf">NGINX configuration template</a></li>
+          <li><em>Resources:</em> <a href="https://github.com/everett-toews/jupyterhub-on-docker-swarm/blob/gh-pages/resources/nginx.conf" target="_blank">NGINX configuration template</a></li>
           <li><em>Hint:</em> <code>docker ps</code> will show which segment each container is on</li>
         </ul>
+
+<p><a href="https://github.com/everett-toews/jupyterhub-on-docker-swarm/blob/gh-pages/resources/lab-3-solution.md" target="_blank">Top Secret Answer</a></p>
+
         <aside class="notes">
           <pre><code class="bash" data-trim data-noescape>
 docker run -d --name backend rackerlabs/whoa
@@ -997,6 +1005,14 @@ docker run -d --name my-nginx --volumes-from certs -p 443:443 my-nginx
         </aside>
       </section>
 
+      <section>
+        <h3>Carina Resources</h3>
+        <ul>
+          <li><a href="https://getcarina.com/docs/" target="_blank">Carina Tutorials, Troubleshooting and Best Practices</a></li>
+          <li><a href="https://getcarina.com/docs/reference/faq/" target="_blank">Carina FAQ</a></li>
+          <li><a href="https://docs.docker.com/swarm/overview/" target="_blank">Docker Swarm Overview</a></li>
+        </ul>
+      </section>
 <!-- ********************************************************************** -->
 
         <section id="break">
@@ -1032,7 +1048,7 @@ docker run -d --name my-nginx --volumes-from certs -p 443:443 my-nginx
 
         <section>
           <h2>Let's try it live!</h2>
-          <h3><a href="https://tmpnb.org" target="blank">tmpnb.org</a></h3>
+          <h3><a href="https://tmpnb.org" target="_blank">tmpnb.org</a></h3>
         </section>
 
 <!-- ********************************************************************** -->
@@ -1076,7 +1092,7 @@ carina create jupyterhub --wait
 git clone https://github.com/everett-toews/jupyterhub-on-docker-swarm
           </code></pre>
 
-          <p>If you don't have git, <a href="https://github.com/everett-toews/jupyterhub-on-docker-swarm/archive/gh-pages.zip" target="blank">download the repository</a>.</p>
+          <p>If you don't have git, <a href="https://github.com/everett-toews/jupyterhub-on-docker-swarm/archive/gh-pages.zip" target="_blank">download the repository</a>.</p>
         </section>
 
         <section>
@@ -1095,7 +1111,7 @@ Segment IP: 146.20.68.51
         <section>
           <h3>Configure GitHub OAuth Cont.</h3>
 
-          <p><a href="https://github.com/settings/applications/new" target="blank">Create a new developer application on GitHub</a></p>
+          <p><a href="https://github.com/settings/applications/new" target="_blank">Create a new developer application on GitHub</a></p>
           <img src="img/github-oauth-app.png" />
         </section>
 
