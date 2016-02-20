@@ -847,7 +847,7 @@ $ docker port whoa2 8080</span>
 <span class="fragment">104.130.0.117:80</span>
 <span class="fragment">
 $ curl $(docker port whoa1)</span>
-<span class="fragment">� Whoa! �</span>
+<span class="fragment">🎉  Whoa!  🎉</span>
         </code></pre>
 
         <aside class="notes">
@@ -922,6 +922,24 @@ $ docker build --build-arg affinity:image==myapp -t myapp:v2 .</span>
           <li>Each segment has its own public IP, discoverable via <code>docker info</code></li>
         </ul>
 
+        <pre class="fragment"><code data-trim data-noescape>
+$ docker info
+Containers: 9
+Images: 13
+Role: primary
+Strategy: spread
+Filters: health, port, dependency, affinity, constraint
+Nodes: 3
+6dcd3c04-fab5-4367-ac39-d8b17c41c39c-n1: <mark>172.99.73.138</mark>:42376
+└ Containers: 3
+└ Reserved CPUs: 0 / 12
+└ Reserved Memory: 0 B / 4.2 GiB
+└ Labels: executiondriver=native-0.2, kernelversion=3.18.21-1-rackos, ...
+        </pre></code>
+
+      </section>
+
+      <section>
         <img src="img/carina-topology.png"/>
 
         <aside class="notes">
@@ -938,7 +956,7 @@ $ docker build --build-arg affinity:image==myapp -t myapp:v2 .</span>
         <pre><code>--privileged</code></pre>
         <pre><code>--cap-add/drop</code></pre>
 
-        <p><a href="https://getcarina.com/docs/troubleshooting/common-problems/">See Carina Troubleshooting for more</p>
+        <p><a href="https://getcarina.com/docs/troubleshooting/common-problems/">See Carina Troubleshooting for more</a></p>
 
         <aside class="notes">
           * Mostly these are related to security needs. Prefer using data volume containers to host
