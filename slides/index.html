@@ -87,6 +87,7 @@
             <ul>
               <li>The Docker basics will essentially be the minimum knowledge of Docker you need to complete the workshop</li>
               <li>File issues or send PRs!</li>
+              <li>Windows users band together</li>
               <li>Pair up</li>
             </ul>
           </aside>
@@ -120,24 +121,26 @@
             <li><a href="https://app.getcarina.com/" target="_blank">Log In</a></li>
             <li>Use your Rackspace public cloud username/password</li>
             <li>Don't create a cluster just yet</li>
-            <li>Note your API Key under your username in the top right corner</li>
+            <li>Get your API Key under your username in the top right corner</li>
+            <li>Note: People without a Rackspace account do not need to use a credit card</li>
           </ul>
         </section>
 
         <section id="installation">
           <h3>Installation</h3>
           <ol>
+            <li><a href="https://git-scm.com/downloads" target="_blank">Git</a></li>
             <li>Docker Version Manager</li>
             <ol>
               <li>Utility for managing Docker client versions</li>
-              <li><a href="https://getcarina.com/docs/tutorials/docker-version-manager/" target="_blank">Manage Docker client versions with dvm</a>
+              <li><a href="https://getcarina.com/docs/tutorials/docker-version-manager/" target="_blank">Manage Docker client versions with dvm</a></li>
               <li>Do the <b>Install dvm</b> section only</li>
               <li><code>dvm install 1.10.1</code></li>
             </ol>
             <li>Carina CLI</li>
             <ol>
               <li>The CLI for the Caria API</li>
-              <li><a href="https://getcarina.com/docs/getting-started/getting-started-carina-cli/" target="_blank">Getting started with the Carina CLI</a>
+              <li><a href="https://getcarina.com/docs/getting-started/getting-started-carina-cli/" target="_blank">Getting started with the Carina CLI</a></li>
               <li>Do the <b>Download and install the CLI</b> and <b>Configure with Carina credentials</b> sections only</li>
               <li><code>carina ls</code></li>
             </ol>
@@ -213,9 +216,10 @@
             <li>Application packaging (Docker images)</li>
             <li>Process isolation</li>
             <li>Reproducible environments</li>
+            <li>Immutable infrastructure</li>
             <li>Composable</li>
             <li>Multi-Cloud</li>
-            <li>Ecourages ���</li>
+            <li>Ecourages 🐮🐮🐮</li>
           </ul>
         </section>
 
@@ -295,15 +299,15 @@ c715e66154c8        carina/consul       "/bin/consul agent -b"   3 days ago     
         <section>
           <h3>Containers</h3>
           <pre><code class="bash" data-trim data-noescape>
-# uname -a
+/ # uname -a
 <span class="fragment">Linux d020582f8e97 3.18.21-1-rackos #1 SMP Tue Oct 6 18:37:31 UTC 2015 x86_64 Linux</span>
 
-<span class="fragment"># ps</span>
+<span class="fragment">/ # ps</span>
 <span class="fragment">PID   USER     TIME   COMMAND
     1 root       0:00 /bin/sh
    17 root       0:00 ps</span>
 
-<span class="fragment"># exit</span>
+<span class="fragment">/ # exit</span>
           </code></pre>
         </section>
 
@@ -334,9 +338,9 @@ d020582f8e97        alpine:3.3          "/bin/sh"                6 minutes ago  
           </code></pre>
           <aside class="notes">
             <ul>
-              <li>It can be a bit of a pain working with unnamed containers so we'll name them from here on out</li>
               <li>Notice how we're not using SSH</li>
               <li>You can also use docker exec to enter a container</li>
+              <li>It can be a bit of a pain working with unnamed containers so we'll name them from here on out</li>
             </ul>
           </aside>
         </section>
@@ -380,15 +384,6 @@ fbe7b7f520e8        ghost:0.7           "/entrypoint.sh npm s"   About a minute 
           </ol>
 
           <p><a href="https://github.com/everett-toews/jupyterhub-on-docker-swarm/blob/gh-pages/resources/lab-1-solution.md" target="_blank">Top Secret Answer</a></p>
-          <aside class="notes">
-            <pre><code class="bash" data-trim data-noescape>
-docker run --detach --name nginx --publish 80:80 nginx:1.9
-chmod r+x README.md
-docker cp README.md nginx:/usr/share/nginx/html/index.html
-open http://$(docker port nginx 80/tcp)
-docker rm --force nginx
-            </code></pre>
-          </aside>
         </section>
 
         <section>
@@ -444,9 +439,9 @@ carina/consul       latest              2a49945a93ab        2 weeks ago         
         <section>
           <h3>Images</h3>
           <pre><code class="bash" data-trim data-noescape>
-$ mkdir workshop
+$ mkdir -p workshop/ex1
 
-<span class="fragment">$ cd workshop</span>
+<span class="fragment">$ cd workshop/ex1</span>
 
 <span class="fragment">$ touch Dockerfile</span>
 
@@ -528,6 +523,8 @@ $ docker run --detach \
 
 <span class="fragment">$ docker rm --force nginx</span>
 <span class="fragment">nginx</span>
+
+<span class="fragment">$ cd ..</span>
           </code></pre>
         </section>
 
@@ -657,7 +654,7 @@ c3a94fdde28f        96afcb76-6483-443e-941d-df9f803a4628-n1/docker_gwbridge   br
         <section>
           <h3>Networks</h3>
           <pre><code class="bash" data-trim data-noescape>
-docker run --detach \
+$ docker run --detach \
   --name wordpress \
   --net mynet \
   --publish 80:80 \
@@ -848,7 +845,7 @@ $ docker run --name whoa2 --detach --publish 80:8080 rackerlabs/whoa</span>
 $ docker port whoa2 8080</span>
 <span class="fragment">104.130.0.117:80</span>
 <span class="fragment">
-$ curl $(docker port whoa1)</span>
+$ curl $(docker port whoa1 8080/tcp)</span>
 <span class="fragment">🎉  Whoa!  🎉</span>
         </code></pre>
 
@@ -868,7 +865,8 @@ $ curl $(docker port whoa1)</span>
             <li>Create a new cluster</li>
             <li>Grow the cluster to 3 segments</li>
             <li>Load the Docker environment for the new cluster</li>
-            <li>Run 3 instances of `rackerlabs/whoa` on port 80</li>
+            <li>Run 3 instances of <code>rackerlabs/whoa</code> on port 80</li>
+            <li>Stop the container and remove it</li>
           </ol>
 
           <p><a href="https://github.com/everett-toews/jupyterhub-on-docker-swarm/blob/gh-pages/resources/lab-2-solution.md" target="_blank">Top Secret Answer</a></p>
@@ -972,6 +970,7 @@ Nodes: 3
       <section>
         <h3>Lab #3</h3>
         <ol>
+          <li>Make a directory for lab3 and change to it</li>
           <li>Run a <code>rackerlabs/whoa</code> container</li>
           <li>Create a data volume container (DVC) on the same segment</li>
           <li><a href="https://github.com/everett-toews/jupyterhub-on-docker-swarm/blob/gh-pages/resources/selfsigned.sh" target="_blank">Generate a self-signed certificate</a></li>
@@ -995,11 +994,14 @@ Nodes: 3
 
         <aside class="notes">
           <pre><code class="bash" data-trim data-noescape>
-docker run -d --name backend rackerlabs/whoa
+mkdir lab3
+cd lab3
+docker run -d --name whoa rackerlabs/whoa
 docker create --name certs -v /certificates -e affinity:container==whoa busybox
+openssl req -x509 -newkey rsa:2048 -days 365 -nodes -batch -keyout private-key.pem -out public-certificate.pem
 docker cp ./private-key.pem certs:/certificates/private-key.pem
 docker cp ./public-certificate.pem certs:/certificates/public-certificate.pem
-docker build -t my-nginx -f resources/Dockerfile.nginx --build-arg affinity:container==certs resources/
+docker build -t my-nginx -f Dockerfile.nginx --build-arg affinity:container==certs .
 docker run -d --name my-nginx --volumes-from certs -p 443:443 my-nginx
           </code></pre>
         </aside>
@@ -1008,8 +1010,9 @@ docker run -d --name my-nginx --volumes-from certs -p 443:443 my-nginx
       <section>
         <h3>Carina Resources</h3>
         <ul>
-          <li><a href="https://getcarina.com/docs/" target="_blank">Carina Tutorials, Troubleshooting and Best Practices</a></li>
+          <li><a href="https://getcarina.com/docs/concepts/docker-swarm-carina/" target="_blank">Understanding how Carina uses Docker Swarm</a></li>
           <li><a href="https://getcarina.com/docs/reference/faq/" target="_blank">Carina FAQ</a></li>
+          <li><a href="https://getcarina.com/docs/" target="_blank">Carina Tutorials, Troubleshooting and Best Practices</a></li>
           <li><a href="https://docs.docker.com/swarm/overview/" target="_blank">Docker Swarm Overview</a></li>
         </ul>
       </section>
@@ -1128,14 +1131,13 @@ Segment IP: 146.20.68.51
           <h3>Launch</h3>
 
           <pre><code class="bash" data-trim>
-# Change to the jupyterhub-on-docker-swarm /jupyterhub-launch directory
+$ cd jupyterhub-on-docker-swarm/jupyterhub-launch
 
-$ eval $(carina env jupyterhub)
-$ DNSNAME=$(docker run --rm --net=host racknet/ip public ipv4) \
-  JUPYTERHUB_USERS=&lt;github-user&gt; \
-  GITHUB_CLIENT_ID=&lt;github-client-id&gt; \
-  GITHUB_CLIENT_SECRET=&lt;github-client-secret&gt; \
-  ./launch.sh
+$ export DNSNAME=$(docker run --rm --net=host racknet/ip public ipv4)
+$ export JUPYTERHUB_USERS=<github-user>
+$ export GITHUB_CLIENT_ID=<github-client-id>
+$ export GITHUB_CLIENT_SECRET=<github-client-secret>
+$ ./launch.sh
 
 PS> carina env jupyterhub --shell powershell | iex
 PS> $env:DNSNAME=$(docker run --rm --net=host racknet/ip public ipv4); `
