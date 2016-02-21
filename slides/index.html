@@ -968,46 +968,6 @@ Nodes: 3
       </section>
 
       <section>
-        <h3>Lab #3</h3>
-        <ol>
-          <li>Make a directory for lab3 and change to it</li>
-          <li>Run a <code>rackerlabs/whoa</code> container</li>
-          <li>Create a data volume container (DVC) on the same segment</li>
-          <li><a href="https://github.com/everett-toews/jupyterhub-on-docker-swarm/blob/gh-pages/resources/selfsigned.sh" target="_blank">Generate a self-signed certificate</a></li>
-          <li>Use <code>docker cp</code> to upload a self-signed TLS certificate to the DVC</li>
-          <li>
-            Run an <code>nginx:1.9</code> container that:
-            <ul>
-              <li>mounts the volume from the DVC</li>
-              <li>publishes port 443 and uses your TLS certificate</li>
-              <li>proxies traffic to the <code>rackerlabs/whoa</code> container</li>
-            </ul>
-          </li>
-        </ol>
-        <hr>
-        <ul>
-          <li><em>Resources:</em> <a href="https://github.com/everett-toews/jupyterhub-on-docker-swarm/blob/gh-pages/resources/nginx.conf" target="_blank">NGINX configuration template</a></li>
-          <li><em>Hint:</em> <code>docker ps</code> will show which segment each container is on</li>
-        </ul>
-
-<p><a href="https://github.com/everett-toews/jupyterhub-on-docker-swarm/blob/gh-pages/resources/lab-3-solution.md" target="_blank">Top Secret Answer</a></p>
-
-        <aside class="notes">
-          <pre><code class="bash" data-trim data-noescape>
-mkdir lab3
-cd lab3
-docker run -d --name whoa rackerlabs/whoa
-docker create --name certs -v /certificates -e affinity:container==whoa busybox
-openssl req -x509 -newkey rsa:2048 -days 365 -nodes -batch -keyout private-key.pem -out public-certificate.pem
-docker cp ./private-key.pem certs:/certificates/private-key.pem
-docker cp ./public-certificate.pem certs:/certificates/public-certificate.pem
-docker build -t my-nginx -f Dockerfile.nginx --build-arg affinity:container==certs .
-docker run -d --name my-nginx --volumes-from certs -p 443:443 my-nginx
-          </code></pre>
-        </aside>
-      </section>
-
-      <section>
         <h3>Carina Resources</h3>
         <ul>
           <li><a href="https://getcarina.com/docs/concepts/docker-swarm-carina/" target="_blank">Understanding how Carina uses Docker Swarm</a></li>
