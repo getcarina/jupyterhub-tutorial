@@ -8,7 +8,7 @@ We'll deploy Jupyter Notebook servers with JupyterHub to put this distributed de
 
 The Jupyter Notebook server is a web application that allows you to create and share documents that contain live code, equations, visualizations, and explanatory text. That makes it an excellent environment for teaching without requiring students to install anything. Uses include: data cleaning and transformation, numerical simulation, statistical modeling, machine learning, and much more. JupyterHub is a multi-user server that manages and proxies multiple instances the Notebook server enabling centralized deployments in companies, university classrooms, and research labs.
 
-[Slides](http://getcarina.github.io/carina-jupyterhub/slides/)
+[Slides](http://getcarina.github.io/jupyterhub-tutorial/slides/)
 
 ## Timeline
 
