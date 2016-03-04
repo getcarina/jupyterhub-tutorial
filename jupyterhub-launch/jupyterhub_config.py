@@ -19,7 +19,7 @@ c.JupyterHub.login_url = "/hub/oauth_login"
 
 def userlist(varname):
     """
-    Interept an environment variable as a whitespace-separated list of GitHub
+    Intercept an environment variable as a whitespace-separated list of GitHub
     usernames.
     """
 
