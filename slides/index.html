@@ -1137,10 +1137,31 @@ PS> $env:DNSNAME=$(docker run --rm --net=host racknet/ip public ipv4); `
         </section>
 
         <section>
+          <h3>Clean up</h3>
+
+          <pre><code class="bash" data-trim>
+$ carina rm mycluster
+ClusterName         Flavor              Nodes       AutoScale       Status
+mycluster           container1-4G       2           false           deleting
+          </code></pre>
+        </section>
+
+        <section>
           <h1>Thanks!</h1>
-          <ul>
-            <li><a href="https://rax.io/workshops-feedback" target="_blank">Feedback survey</a></li>
-          </ul>
+          <center>
+            <table>
+              <tbody>
+                <tr>
+                  <td>Everett Toews</td>
+                  <td><a href="https://twitter.com/everett_toews" target="_blank">@everett_toews</a></td>
+                </tr>
+                <tr>
+                  <td>Ash Wilson</td>
+                  <td><a href="https://twitter.com/smashwilson" target="_blank">@smashwilson</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </center>
         </section>
 
 <!-- ********************************************************************** -->
