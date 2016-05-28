@@ -16,7 +16,7 @@ set -euo pipefail
 # export GITHUB_CLIENT_ID=
 # export GITHUB_CLIENT_SECRET=
 
-docker build -t jupyterhub-carina .
+docker build --build-arg constraint:node==*n1 -t jupyterhub-carina .
 docker pull jupyter/singleuser
 
 docker run --detach \
@@ -31,7 +31,7 @@ docker run --detach \
   -e OAUTH_CALLBACK_URL=http://${DNSNAME}/hub/oauth_callback \
   -e GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID} \
   -e GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET} \
-  -e "constraint:node==*n1" \
+  -e constraint:node==*n1 \
   jupyterhub-carina
 
 open http://$(docker port jupyterhub 8000)

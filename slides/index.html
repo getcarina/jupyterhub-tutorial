@@ -7,8 +7,6 @@
     <title>JupyterHub on Docker Swarm</title>
 
     <meta name="description" content="Deploy an interactive data science environment with JupyterHub on Docker Swarm">
-    <meta name="author" content="Kyle Kelley">
-    <meta name="author" content="Carolyn Van Slyck">
     <meta name="author" content="Everett Toews">
     <meta name="author" content="Ash Wilson">
 
@@ -57,14 +55,6 @@
             <table>
               <tbody>
                 <tr>
-                  <td>Kyle Kelley</td>
-                  <td><a href="https://twitter.com/rgbkrk" target="_blank">@rgbkrk</a></td>
-                </tr>
-                <tr>
-                  <td>Carolyn Van Slyck</td>
-                  <td><a href="https://twitter.com/carolynvs" target="_blank">@carolynvs</a></td>
-                </tr>
-                <tr>
                   <td>Everett Toews</td>
                   <td><a href="https://twitter.com/everett_toews" target="_blank">@everett_toews</a></td>
                 </tr>
@@ -110,6 +100,7 @@
 
         <section>
             <h3>Conventions</h3>
+            <p>Bash and PowerShell</p>
             <pre><code class="bash" data-trim data-noescape>
 $ # bash command
 > # powershell equivalent command
@@ -129,14 +120,16 @@ $ docker run \
         </section>
 
         <section>
-          <h3>Log In</h3>
-          <p>Log in to the Carina GUI.</p>
+          <h3>Setup</h3>
           <ul>
-            <li><a href="https://app.getcarina.com/" target="_blank">Log In</a></li>
-            <li>Use your Rackspace public cloud username/password</li>
+            <li><a href="http://rack.to/carina-workshop" target="_blank">Sign up for a Carina account</a></li>
+            <ul>
+              <li>⭐️ Be <b>exact</b> with your email and password ⭐️</li>
+              <li>You only get one chance to enter them!</li>
+            </ul>
             <li>Don't create a cluster just yet</li>
             <li>Get your API Key under your username in the top right corner</li>
-            <li>Note: People without a Rackspace account do not need to use a credit card</li>
+            <li>Go to the next slide</li>
           </ul>
         </section>
 
@@ -170,13 +163,17 @@ $ docker run \
               <ul>
                 <li>Note the Edit on GitHub links on every page</li>
               </ul>
+            <li>Blog</li>
+              <ul>
+                <li>Subscribe via RSS</li>
+              </ul>
             <li>Community</li>
               <ul>
                 <li>Use your Rackspace public cloud username/password</li>
               </ul>
-            <li>Blog</li>
+            <li>Status</li>
               <ul>
-                <li>Subscribe via RSS</li>
+                <li>Subscribe to updates</li>
               </ul>
           </ul>
         </section>
@@ -266,7 +263,7 @@ $ cd Downloads/mycluster
 <span class="fragment">$ source docker.env
 > . .\docker.ps1</span>
 
-<span class="fragment">$ env | grep DOCKER_
+<span class="fragment">$ env | grep DOCKER
 > dir env:DOCKER*</span>
 
 <span class="fragment">DOCKER_HOST=tcp://146.20.68.14:2376
@@ -292,12 +289,7 @@ $ docker
 A self-sufficient runtime for containers...</span>
 
 <span class="fragment">$ docker ps</span>
-<span class="fragment">CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
-2c226fad0713        carina/consul       "/bin/consul agent -b"   2 days ago          Up 2 days                               96afcb76-6483-443e-941d-df9f803a4628-n2/carina-svcd
-c715e66154c8        carina/consul       "/bin/consul agent -b"   3 days ago          Up 3 days                               96afcb76-6483-443e-941d-df9f803a4628-n1/carina-svcd</span>
-
-<span class="fragment">$ docker run --interactive --tty alpine:3.3 /bin/sh</span>
-<span class="fragment">/ #</span>
+<span class="fragment">CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES</span>
           </code></pre>
           <aside class="notes">
             Ignore the Consul containers for now. We'll discuss them at the end of Networks.
@@ -307,7 +299,9 @@ c715e66154c8        carina/consul       "/bin/consul agent -b"   3 days ago     
         <section>
           <h3>Containers</h3>
           <pre><code class="bash" data-trim data-noescape>
-/ # uname -a
+$ docker run --interactive --tty alpine:3.3 /bin/sh
+<span class="fragment">/ #</span>
+<span class="fragment">/ # uname -a</span>
 <span class="fragment">Linux d020582f8e97 3.18.21-1-rackos #1 SMP Tue Oct 6 18:37:31 UTC 2015 x86_64 Linux</span>
 
 <span class="fragment">/ # ps</span>
@@ -339,7 +333,7 @@ d020582f8e97        alpine:3.3          "/bin/sh"                6 minutes ago  
 <span class="fragment">$ docker attach $(docker ps -l -q)
 (Press enter if you just get a blank line)</span>
 
-<span class="fragment"># exit</span>
+<span class="fragment">/ # exit</span>
 
 <span class="fragment">$ docker rm $(docker ps -l -q)</span>
 <span class="fragment">d020582f8e97</span>
@@ -472,7 +466,7 @@ ENV RUN_TIME_VAR="Default Run Time Message"
 RUN apk --no-cache add nginx
 
 COPY entrypoint.sh /entrypoint.sh
-chmod u+x entrypoint.sh
+RUN chmod u+x entrypoint.sh
 
 WORKDIR /usr/share/nginx/html/
 
@@ -553,7 +547,7 @@ $ docker run --detach \
           <h2>Volumes</h2>
           <ul>
             <li>A specially-designated directory within one or more containers that bypasses the container's Union File System</li>
-            <li>Data is written directly to the segment</li>
+            <li>Data is written directly to the node</li>
             <li>Designed to persist data, independent of the container’s life cycle</li>
             <li>Can be shared and reused among containers</li>
           </ul>
@@ -562,7 +556,7 @@ $ docker run --detach \
         <section>
           <h3>Volumes</h3>
           <pre><code class="bash" data-trim data-noescape>
-$ docker create --name data --volume /var/lib/mysql cirros /bin/true
+$ docker create --name data --volume /var/lib/mysql cirros
 <span class="fragment">162bf49dbc24245a53095b5be611da3e820862dc8e837a66dab83d7e3f9d5b5a</span>
 
 <span class="fragment">$ docker ps -l
@@ -629,7 +623,6 @@ test</span>
         <section>
           <h2>Networks</h2>
           <ul>
-            <li>Added to Carina last Monday!</li>
             <li>A secured and isolated environment for the containers in a network</li>
             <li>Automatic name resolution of containers using DNS</li>
             <li>The ability to dynamically connect containers to and disconnect containers from multiple networks</li>
@@ -687,10 +680,13 @@ wordpress</span>
         <section>
           <h3>Networks</h3>
           <pre><code class="bash" data-trim data-noescape>
-$ docker ps
+$ docker ps --all
 <span class="fragment">CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
-2c226fad0713        carina/consul       "/bin/consul agent -b"   2 days ago          Up 2 days                               96afcb76-6483-443e-941d-df9f803a4628-n2/carina-svcd
-c715e66154c8        carina/consul       "/bin/consul agent -b"   3 days ago          Up 3 days                               96afcb76-6483-443e-941d-df9f803a4628-n1/carina-svcd</span>
+7573f6685549        swarm:1.2.0           "/swarm manage -H=tcp"   30 hours ago        Up 30 hours                             1dba0f72-75bc-4825-a5a0-b2993c535599-n1/swarm-manager
+1d4f3859f9da        swarm:1.2.0           "/swarm join --addr=1"   30 hours ago        Up 30 hours                             1dba0f72-75bc-4825-a5a0-b2993c535599-n1/swarm-agent
+d563be543c55        cirros                "/sbin/init"             30 hours ago        Created                                 1dba0f72-75bc-4825-a5a0-b2993c535599-n1/swarm-data
+326c0fd484d8        swarm:carina-consul   "/entrypoint.sh agent"   30 hours ago        Up 30 hours                             1dba0f72-75bc-4825-a5a0-b2993c535599-n1/carina-svcd
+dc0538bd0134        cirros                "/sbin/init"             30 hours ago        Created                                 1dba0f72-75bc-4825-a5a0-b2993c535599-n1/carina-svcd-data</span>
 
 <span class="fragment"># No need to run the following commands</span>
 <span class="fragment">$ docker rm container-name-1 container-name-2</span>
@@ -764,7 +760,7 @@ c715e66154c8        carina/consul       "/bin/consul agent -b"   3 days ago     
           <h4>List your Clusters</p>
           <pre><code class="bash" data-trim data-noescape>
 $ carina ls
-<span class="fragment">ClusterName       Flavor           Segments           AutoScale          Status
+<span class="fragment">ClusterName       Flavor           nodes           AutoScale          Status
 mycluster         container1-4G    1                  false              active</span>
           </code></pre>
         </div>
@@ -775,7 +771,7 @@ mycluster         container1-4G    1                  false              active<
           <h4>Create a Cluster</h4>
           <pre><code class="bash" data-trim data-noescape>
 $ carina create --wait foobar
-<span class="fragment">ClusterName     Flavor          Segments         AutoScale        Status
+<span class="fragment">ClusterName     Flavor          nodes         AutoScale        Status
 foobar          container1-4G   1                false            active</span>
           </code></pre>
         </div>
@@ -784,7 +780,7 @@ foobar          container1-4G   1                false            active</span>
             <h4>Rebuild a Cluster</h4>
             <pre><code class="bash" data-trim data-noescape>
 $ carina rebuild foobar
-<span class="fragment">ClusterName     Flavor          Segments         AutoScale        Status
+<span class="fragment">ClusterName     Flavor          nodes         AutoScale        Status
 foobar          container1-4G   1                false            rebuilding-swarm</span>
             </code></pre>
           </div>
@@ -827,16 +823,16 @@ ab668e03cafb      logjam     "tail -f /var/log/foo"   3 seconds ago       Up 3 s
           <h4>Grow Your Cluster</h4>
           <pre><code class="bash" data-trim data-noescape>
 $ carina ls
-<span class="fragment">ClusterName        Flavor             Segments           AutoScale          Status
+<span class="fragment">ClusterName        Flavor             nodes           AutoScale          Status
 mycluster          container1-4G      1                  false              active</span>
 <span class="fragment">
-# No need to run the following command
-$ carina grow --by 1 mycluster</span>
-<span class="fragment">ClusterName        Flavor             Segments           AutoScale          Status
+# Don't run these commands right now</span>
+<span class="fragment">$ carina grow --by 1 mycluster</span>
+<span class="fragment">ClusterName        Flavor             nodes           AutoScale          Status
 mycluster          container1-4G      1                  false              growing</span>
 <span class="fragment">
 $ carina ls</span>
-<span class="fragment">ClusterName        Flavor             Segments           AutoScale          Status
+<span class="fragment">ClusterName        Flavor             nodes           AutoScale          Status
 mycluster          container1-4G      2                  false              active</span>
           </code></pre>
           <aside class="notes">
@@ -847,28 +843,29 @@ mycluster          container1-4G      2                  false              acti
       <section>
         <h3>Swarm Scheduling in Action</h3>
         <pre><code class="bash" data-trim data-noescape>
-$ <span class="fragment">docker run --name whoa1 --detach --publish 80:8080 rackerlabs/whoa</span>
+$ docker run --name whoa1 --detach --publish 80:8080 rackerlabs/whoa
 <span class="fragment">44aff6801d136ae7ba49ad074d94a7ba94740326f8d9099d7830ec8095abdf72</span>
 <span class="fragment">
 $ docker port whoa1 8080</span>
 <span class="fragment">104.130.0.119:80</span>
 <span class="fragment">
 $ docker run --name whoa2 --detach --publish 80:8080 rackerlabs/whoa</span>
-<span class="fragment">5e0a9815f9558c7a26a44f3bb214f241a5fbf26e01e008739dff64e39c802fce</span>
-<span class="fragment">
-$ docker port whoa2 8080</span>
-<span class="fragment">104.130.0.117:80</span>
+<span class="fragment">docker: Error response from daemon: Unable to find a node that satisfies the following conditions
+[port 80 (Bridge mode)].</span>
 <span class="fragment">
 $ curl $(docker port whoa1 8080/tcp)</span>
 <span class="fragment">🎉  Whoa!  🎉</span>
+<span class="fragment">
+$ docker rm -f whoa1</span>
+<span class="fragment">whoa1</span>
         </code></pre>
 
         <aside class="notes">
           <ul>
-            <li>Now we have 2 segments, let's fill them up with stuff.</li>
-            <li>Each segment is a docker host</li>
-            <li>Segment IP Address</li>
-            <li>Publish to same port across segments</li>
+            <li>Now we have 2 nodes, let's fill them up with stuff.</li>
+            <li>Each node is a docker host</li>
+            <li>node IP Address</li>
+            <li>Publish to same port across nodes</li>
           </ul>
         </aside>
       </section>
@@ -876,10 +873,8 @@ $ curl $(docker port whoa1 8080/tcp)</span>
       <section>
           <h3>Lab #2</h3>
           <ol>
-            <li>Create a new cluster</li>
-            <li>Grow the cluster to 3 segments</li>
-            <li>Load the Docker environment for the new cluster</li>
-            <li>Run 3 instances of <code>rackerlabs/whoa</code> on port 80</li>
+            <li>Grow the cluster by 1 node</li>
+            <li>Run 2 instances of <code>rackerlabs/whoa</code> on port 80</li>
             <li>Stop the containers and remove them</li>
           </ol>
 
@@ -893,7 +888,7 @@ $ curl $(docker port whoa1 8080/tcp)</span>
 
         <ul>
           <li><code>--publish</code> finds a node with the published port free</li>
-          <li><code>--volumes-from</code> uses the same segment as the named container</li>
+          <li><code>--volumes-from</code> uses the same node as the named container</li>
         </ul>
 
         <aside class="notes">
@@ -916,7 +911,7 @@ $ docker run --env affinity:container==backend ...
 $ docker run --env affinity:image==myapp ...</span>
 
 <span class="fragment"># Explicit node name
-$ docker run --env constraint:node==*-n1 ...</span></span>
+$ docker run --env constraint:node==*n1 ...</span></span>
 
 <span class="fragment"># Build a new image on the same node as an existing container
 $ docker build --build-arg affinity:image==myapp -t myapp:v2 .</span>
@@ -933,24 +928,24 @@ $ docker build --build-arg affinity:image==myapp -t myapp:v2 .</span>
         <h3>Carina Clusters</h3>
 
         <ul>
-          <li>1 to 3 <em>"segments"</em>; LXC containers on a physical host</li>
-          <li>20 GB disk space, 4 GB memory, 2 vCPUs per segment</li>
-          <li>Each segment has its own public IP, discoverable via <code>docker info</code></li>
+          <li>1 to 3 <em>"nodes"</em>; LXC containers on a physical host</li>
+          <li>20 GB disk space, 4 GB memory, 2 vCPUs per node</li>
+          <li>Each node has its own public IP, discoverable via <code>docker info</code></li>
         </ul>
 
         <pre class="fragment"><code data-trim data-noescape>
 $ docker info
 Containers: 9
+ Running: 5
+ Paused: 0
+ Stopped: 4
 Images: 13
+Server Version: swarm/1.2.0
 Role: primary
 Strategy: spread
 Filters: health, port, dependency, affinity, constraint
-Nodes: 3
-6dcd3c04-fab5-4367-ac39-d8b17c41c39c-n1: <mark>172.99.73.138</mark>:42376
-└ Containers: 3
-└ Reserved CPUs: 0 / 12
-└ Reserved Memory: 0 B / 4.2 GiB
-└ Labels: executiondriver=native-0.2, kernelversion=3.18.21-1-rackos, ...
+Nodes: 2
+...
         </pre></code>
 
       </section>
@@ -959,8 +954,8 @@ Nodes: 3
         <img src="img/carina-topology.png"/>
 
         <aside class="notes">
-          Segment v. Node
-          Carina segments are for resource control, not geographic redundancy.
+          node v. Node
+          Carina nodes are for resource control, not geographic redundancy.
         </aside>
       </section>
 
@@ -1056,32 +1051,21 @@ Nodes: 3
         </section>
 
         <section>
-          <h3>Create a new cluster</h3>
-          <pre><code class="bash" data-trim data-noescape>
-carina create jupyterhub --wait
-          </code></pre>
-        </section>
-
-<!-- That's one long repo name for the board -->
-        <section>
           <h3>Clone this repo</h3>
           <pre><code class="bash" data-trim data-noescape>
-git clone https://github.com/everett-toews/jupyterhub-on-docker-swarm
+git clone https://github.com/getcarina/jupyterhub-tutorial.git
           </code></pre>
 
-          <p>If you don't have git, <a href="https://github.com/everett-toews/jupyterhub-on-docker-swarm/archive/gh-pages.zip" target="_blank">download the repository</a>.</p>
+          <p>If you don't have git, <a href="https://github.com/getcarina/jupyterhub-tutorial/archive/gh-pages.zip" target="_blank">download the repository</a>.</p>
         </section>
 
         <section>
           <h3>Configure GitHub OAuth</h3>
 
-          <p>Get your segment IP address</p>
+          <p>Get your node IP address</p>
           <pre><code class="bash" data-trim data-noescape>
-$ eval $(carina env jupyterhub)
-PS> carina env jupyterhub | iex
-
-$ echo "Segment IP: $(docker run --rm --net=host racknet/ip public ipv4)"
-Segment IP: 146.20.68.51
+$ docker run --rm --net=host --env constraint:node==*n1 racknet/ip public ipv4
+146.20.68.51
           </code></pre>
         </section>
 
@@ -1105,9 +1089,9 @@ Segment IP: 146.20.68.51
           <h3>Launch</h3>
 
           <pre><code class="bash" data-trim>
-$ cd jupyterhub-on-docker-swarm/jupyterhub-launch
+$ cd jupyterhub-launch
 
-$ export DNSNAME=$(docker run --rm --net=host racknet/ip public ipv4)
+$ export DNSNAME=$(docker run --rm --net=host --env constraint:node==*n1 racknet/ip public ipv4)
 $ export JUPYTERHUB_USERS=<github-user>
 $ export GITHUB_CLIENT_ID=<github-client-id>
 $ export GITHUB_CLIENT_SECRET=<github-client-secret>
@@ -1177,7 +1161,8 @@ PS> $env:DNSNAME=$(docker run --rm --net=host racknet/ip public ipv4); `
         progress: false,
         history: true,
         center: true,
-
+        minScale: 1,
+        maxScale: 1,
         transition: 'slide', // none/fade/slide/convex/concave/zoom
 
         // Optional reveal.js plugins
