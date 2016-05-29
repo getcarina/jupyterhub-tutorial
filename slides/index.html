@@ -126,6 +126,7 @@ $ docker run \
             <ul>
               <li>⭐️ Be <b>exact</b> with your email and password ⭐️</li>
               <li>You only get one chance to enter them!</li>
+              <li>Type your email and password into a text editor then copy them into the form</li>
             </ul>
             <li>Don't create a cluster just yet</li>
             <li>Get your API Key under your username in the top right corner</li>
@@ -300,7 +301,6 @@ A self-sufficient runtime for containers...</span>
           <h3>Containers</h3>
           <pre><code class="bash" data-trim data-noescape>
 $ docker run --interactive --tty alpine:3.3 /bin/sh
-<span class="fragment">/ #</span>
 <span class="fragment">/ # uname -a</span>
 <span class="fragment">Linux d020582f8e97 3.18.21-1-rackos #1 SMP Tue Oct 6 18:37:31 UTC 2015 x86_64 Linux</span>
 
@@ -327,8 +327,8 @@ d020582f8e97        alpine:3.3          "/bin/sh"           5 minutes ago       
 <span class="fragment">d020582f8e97</span>
 
 <span class="fragment">$ docker ps -l</span>
-<span class="fragment">CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
-d020582f8e97        alpine:3.3          "/bin/sh"                6 minutes ago       Up 10 seconds                           96afcb76-6483-443e-941d-df9f803a4628-n2/pedantic_yalow</span>
+<span class="fragment">CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                     PORTS               NAMES
+d020582f8e97        alpine:3.3          "/bin/sh"           6 minutes ago       Up 10 seconds                           96afcb76-6483-443e-941d-df9f803a4628-n2/pedantic_yalow</span>
 
 <span class="fragment">$ docker attach $(docker ps -l -q)
 (Press enter if you just get a blank line)</span>
@@ -824,16 +824,16 @@ ab668e03cafb      logjam     "tail -f /var/log/foo"   3 seconds ago       Up 3 s
           <pre><code class="bash" data-trim data-noescape>
 $ carina ls
 <span class="fragment">ClusterName        Flavor             nodes           AutoScale          Status
-mycluster          container1-4G      1                  false              active</span>
+mycluster          container1-4G      1               false              active</span>
 <span class="fragment">
 # Don't run these commands right now</span>
 <span class="fragment">$ carina grow --by 1 mycluster</span>
 <span class="fragment">ClusterName        Flavor             nodes           AutoScale          Status
-mycluster          container1-4G      1                  false              growing</span>
+mycluster          container1-4G      1               false              growing</span>
 <span class="fragment">
 $ carina ls</span>
 <span class="fragment">ClusterName        Flavor             nodes           AutoScale          Status
-mycluster          container1-4G      2                  false              active</span>
+mycluster          container1-4G      2               false              active</span>
           </code></pre>
           <aside class="notes">
             Whiteboard the architecture so far.
@@ -1044,7 +1044,6 @@ Nodes: 2
         <section>
           <h2>Outline</h2>
           <ul>
-            <li>Create a new cluster</li>
             <li>Clone the repo for this preso</li>
             <li>Rely on jupyterhub-launch</li>
           </ul>
@@ -1089,19 +1088,19 @@ $ docker run --rm --net=host --env constraint:node==*n1 racknet/ip public ipv4
           <h3>Launch</h3>
 
           <pre><code class="bash" data-trim>
-$ cd jupyterhub-launch
+$ cd jupyterhub-tutorial/jupyterhub-launch
 
 $ export DNSNAME=$(docker run --rm --net=host --env constraint:node==*n1 racknet/ip public ipv4)
-$ export JUPYTERHUB_USERS=<github-user>
-$ export GITHUB_CLIENT_ID=<github-client-id>
-$ export GITHUB_CLIENT_SECRET=<github-client-secret>
+$ export JUPYTERHUB_USERS=[github-user]
+$ export GITHUB_CLIENT_ID=[github-client-id]
+$ export GITHUB_CLIENT_SECRET=[github-client-secret]
 $ ./launch.sh
 
 PS> carina env jupyterhub --shell powershell | iex
 PS> $env:DNSNAME=$(docker run --rm --net=host racknet/ip public ipv4); `
-  $env:JUPYTERHUB_USERS="&lt;github-user&gt;"; `
-  $env:GITHUB_CLIENT_ID="&lt;github-client-id&gt;"; `
-  $env:GITHUB_CLIENT_SECRET="&lt;github-client-secret&gt;"; `
+  $env:JUPYTERHUB_USERS="[github-user]"; `
+  $env:GITHUB_CLIENT_ID="[github-client-id]"; `
+  $env:GITHUB_CLIENT_SECRET="[github-client-secret]"; `
   .\launch.ps1
           </code></pre>
 
@@ -1112,11 +1111,11 @@ PS> $env:DNSNAME=$(docker run --rm --net=host racknet/ip public ipv4); `
           <h3>Start your Jupyter Notebook</h3>
 
           <ol>
-            <li>Sign in with GitHub.</li>
-            <li>Start your Jupyter server.</li>
+            <li>Sign in with GitHub</li>
+            <li>Start your Jupyter server</li>
             <li>Copy a notebook to your server</li>
-            <pre style="width: 45em;"><code>docker cp welcome-to-python.ipynb jupyter-&lt;github-user&gt;:/home/jovyan/work</pre></code>
-            <li>Open the Welcome to Python notebook.</li>
+            <pre style="width: 45em;"><code>docker cp welcome-to-python.ipynb jupyter-[github-user]:/home/jovyan/work</pre></code>
+            <li>Open the Welcome to Python notebook</li>
           </ol>
         </section>
 
@@ -1144,6 +1143,16 @@ $ carina rm mycluster
 ClusterName         Flavor              Nodes       AutoScale       Status
 mycluster           container1-4G       2           false           deleting
           </code></pre>
+        </section>
+
+        <section>
+          <h2>How to Whale</h2>
+          <ul>
+            <li><a href="https://howtowhale.com/" target="_blank">How to Whale</a></li>
+            <li><a href="https://getcarina.com/blog/learning-how-to-whale/" target="_blank">Learning How to Whale</a></li>
+            <li><a href="https://getcarina.com/docs/reference/oauth-integration/" target="_blank">Carina OAuth integration</a></li>
+            <li><a href="https://github.com/jupyterhub/jupyterhub-carina" target="_blank">github.com/jupyterhub/jupyterhub-carina</a></li>
+          </ul>
         </section>
 
         <section>
